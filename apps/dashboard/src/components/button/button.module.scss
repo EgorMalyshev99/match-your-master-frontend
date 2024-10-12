@@ -1,0 +1,45 @@
+.button {
+  border: none;
+  transition: background-color .15s ease-in-out;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.primary {
+    background-color: theme('colors.primary.400');
+    color: theme('colors.white');
+
+    &:hover {
+      background-color: theme('colors.primary.500');
+    }
+  }
+
+  &.secondary {
+    background-color: theme('colors.secondary.400');
+    color: theme('colors.white');
+
+    &:hover {
+      background-color: theme('colors.secondary.500');
+    }
+  }
+
+  &.sm {
+    padding: 0 10px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+
+  &.md {
+    padding: 0 12px;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+}

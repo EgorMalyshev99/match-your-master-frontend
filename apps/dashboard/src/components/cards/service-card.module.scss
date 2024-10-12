@@ -1,0 +1,34 @@
+.card {
+  background-color: theme('colors.white');
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  padding: 15px;
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-left: 1px solid theme('colors.gray.300');
+  border-right: 1px solid theme('colors.gray.300');
+  border-bottom: 1px solid theme('colors.gray.300');
+  flex-grow: 1;
+}
+
+.cardImg {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.descriprion {
+  font-size: 14px;
+}

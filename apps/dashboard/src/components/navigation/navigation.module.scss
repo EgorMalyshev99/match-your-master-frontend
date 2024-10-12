@@ -1,0 +1,16 @@
+.nav {
+  flex-grow: 1;
+  gap: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.navLink {
+  font-size: 18px;
+  font-weight: 500;
+  color: theme('colors.black');
+
+  &Active {
+    color: theme('colors.primary.400');
+  }
+}
