@@ -1,5 +1,7 @@
 import React from "react";
 import Control from "@/components/inputs/control/Control";
+import { ButtonSize, ButtonVariant } from "@/enums/button";
+import Button from "@/components/button/Button";
 
 const Signup = () => {
   return (
@@ -28,6 +30,13 @@ const Signup = () => {
           </label>
           <Control id="password" type="password" name="password" />
         </div>
+        <Button
+          className="w-full"
+          variant={ButtonVariant.primary}
+          size={ButtonSize.lg}
+        >
+          Sign up
+        </Button>
       </form>
     </div>
   );

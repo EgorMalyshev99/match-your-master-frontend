@@ -1,9 +1,9 @@
 import s from "./header.module.scss";
 import Navigation from "@/components/navigation/Navigation";
 import Image from "next/image";
-import AuthButtons from "@/components/auth/AuthButtons";
+import AuthBlock from "@/components/auth/AuthBlock";
 import Link from "next/link";
-import { Route } from "@/enums/route";
+import { Route } from "@/enums/navigation";
 
 const Header = () => {
   return (
@@ -16,7 +16,7 @@ const Header = () => {
             </Link>
             <Navigation />
           </div>
-          <AuthButtons className="ml-auto" />
+          <AuthBlock className="ml-auto" />
         </div>
       </div>
     </header>

@@ -1,0 +1,33 @@
+.authBlock {
+  gap: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown {
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  transform: translateY(100%);
+  width: 200px;
+  padding: 4px 0;
+  border: 1px solid theme('colors.gray.400');
+  border-radius: 5px;
+  background-color: theme('colors.white');
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownLink {
+  padding: 4px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color .15s ease-in-out;
+  text-align: left;
+  display: block;
+
+  &:hover {
+    background-color: theme('colors.gray.100');
+  }
+}

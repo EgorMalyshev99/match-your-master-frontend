@@ -5,7 +5,10 @@ import "../css/forms.css";
 import Header from "@/layout/header/Header";
 import Footer from "@/layout/footer/Footer";
 import Auth from "@/components/auth/Auth";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
+config.autoAddCss = false;
 export const metadata: Metadata = {
   title: "Match your master",
   description: "Match your master",

@@ -1,3 +1,5 @@
+import { User } from "@/models/user";
+
 interface HomeCard {
   title: string;
   img: string;
@@ -35,3 +37,17 @@ export const homeCards: HomeCard[] = [
       "Мастер по бровям — это эксперт в создании идеальной формы и окрашивании. Профессионализм, внимание к деталям и индивидуальный подход обеспечивают безупречный результат.",
   },
 ];
+
+export const mockUser: User = {
+  firstName: "Семён",
+  lastName: "Никифоров",
+  avatar: "/img/mock-avatar.jpg",
+  age: "24",
+  qualification: "Мастер-класс",
+  city: "Москва",
+  phone: "+79999999999",
+  email: "test@example.com",
+  telegram: "Mr_Shimson",
+  whatsApp: "+79999999999",
+  personalWebsite: "https://example.com",
+};
