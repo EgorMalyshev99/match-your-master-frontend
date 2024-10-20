@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import useAuthStore from "@/store/auth";
+import useSessionStore from "@/store/session";
 import ReactModal from "react-modal";
 import SignIn from "@/components/auth/SignIn";
 import SignUp from "@/components/auth/SignUp";
 
 const Auth = () => {
   const { signInOpened, setSignInOpened, signUpOpened, setSignUpOpened } =
-    useAuthStore();
+    useSessionStore();
 
   return (
     <>

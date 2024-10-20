@@ -1,5 +1,8 @@
+"use client";
 import React from "react";
 import Control from "@/components/inputs/control/Control";
+import Button from "@/components/button/Button";
+import { ButtonSize, ButtonVariant } from "@/enums/button";
 
 const Login = () => {
   return (
@@ -22,6 +25,13 @@ const Login = () => {
             placeholder="Введите пароль"
           />
         </div>
+        <Button
+          className="w-full"
+          variant={ButtonVariant.primary}
+          size={ButtonSize.lg}
+        >
+          Log in
+        </Button>
       </form>
     </div>
   );

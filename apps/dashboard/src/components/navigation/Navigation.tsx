@@ -2,8 +2,8 @@
 import React from "react";
 import s from "./navigation.module.scss";
 import Link from "next/link";
-import { Route } from "@/enums/route";
 import { usePathname } from "next/navigation";
+import { Route } from "@/enums/navigation";
 
 const Navigation = () => {
   const pathname = usePathname();
