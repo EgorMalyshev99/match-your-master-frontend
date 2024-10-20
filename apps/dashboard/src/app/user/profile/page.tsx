@@ -6,7 +6,6 @@ import useSessionStore from "@/store/session";
 import { redirect } from "next/navigation";
 import { Route } from "@/enums/navigation";
 import UserInfo from "@/components/user/UserInfo";
-import Image from "next/image";
 import PhoneCard from "@/components/cards/PhoneCard";
 
 const Profile = () => {
