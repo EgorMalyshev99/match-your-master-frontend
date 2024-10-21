@@ -1,0 +1,10 @@
+.label {
+  margin-bottom: 4px;
+  color: theme('colors.black');
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: block;
+}

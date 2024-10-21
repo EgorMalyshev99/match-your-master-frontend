@@ -1,26 +1,14 @@
-import s from "./home.module.scss";
-import { homeCards } from "@/mock";
-import HomeCard from "@/app/ui/HomeCard";
+"use client";
+import { redirect } from "next/navigation";
+import { Route } from "@/enums/navigation";
+import useSessionStore from "@/store/session";
 
 export default function Home() {
-  return (
-    <div className={s.home}>
-      <div className="container">
-        <h1 className={`${s.title} mb-8`}>
-          Стань моделью у профессиональных мастеров
-        </h1>
-        <div className={s.cards}>
-          {homeCards.map((card, index) => (
-            <HomeCard
-              title={card.title}
-              img={card.img}
-              description={card.description}
-              filter={card.filter}
-              key={index}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  const { user } = useSessionStore();
+
+  if (user) {
+    redirect(Route.PROFILE);
+  } else {
+    redirect(Route.LOGIN);
+  }
 }
