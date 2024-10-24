@@ -1,27 +1,29 @@
-version: "2"
 services:
-  dashboard:
-    container_name: dashboard-next
-    build:
-      context: .
-      dockerfile: docker/dashboard/Dockerfile
-    ports:
-      - "3000:3000"
-    restart: on-failure
-    networks:
-      - turbo-network
 
-  landing:
-    container_name: landing-next
-    build:
-      context: .
-      dockerfile: docker/landing/Dockerfile
-    ports:
-      - "3001:3001"
-    restart: on-failure
-    networks:
-      - turbo-network
+    dashboard:
+        container_name: frontend-dashboard
+        build:
+            context: .
+            dockerfile: ./apps/dashboard/.docker/Dockerfile
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3000:3000"
+        networks:
+            - mym-network
+
+    landing:
+        container_name: frontend-landing
+        build:
+            context: .
+            dockerfile: ./apps/landing/.docker/Dockerfile
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3001:3001"
+        networks:
+            - mym-network
 
 networks:
-  turbo-network:
-    driver: bridge
+    mym-network:
+        external: true
