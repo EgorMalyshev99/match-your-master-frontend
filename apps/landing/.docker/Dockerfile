@@ -19,7 +19,7 @@ WORKDIR /app
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
 
-RUN npm install -g pnpm@9.7.1
+RUN npm install -g pnpm@9.12.2
 RUN pnpm install
 
 # Build the project
