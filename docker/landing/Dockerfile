@@ -13,11 +13,11 @@ FROM base AS builder
 WORKDIR /app
 # Install turbo globally
 RUN pnpm install -g turbo@2.2.1
-COPY . .
+COPY ../.. .
 
 # Generate a partial monorepo with a pruned lockfile for a target workspace.
-# Assuming "dashboard" is the name entered in the project's package.json: { name: "dashboard" }
-RUN turbo prune dashboard --docker
+# Assuming "landing" is the name entered in the project's package.json: { name: "landing" }
+RUN turbo prune landing --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -29,7 +29,7 @@ RUN pnpm install
 
 # Build the project
 COPY --from=builder /app/out/full/ .
-RUN pnpm build --filter=dashboard
+RUN pnpm build --filter=landing
 
 FROM base AS runner
 WORKDIR /app
@@ -41,12 +41,12 @@ USER nextjs
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/dashboard/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/dashboard/.next/static ./apps/dashboard/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/dashboard/public ./apps/dashboard/public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/landing/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/landing/.next/static ./apps/landing/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/landing/public ./apps/landing/public
 
-ENV HOSTNAME=0.0.0.0
-ENV PORT=3000
-EXPOSE 3000
+ENV HOSTNAME "0.0.0.0"
+ENV PORT 3001
+EXPOSE 3001
 
-CMD ["node", "apps/dashboard/server.js"]
+CMD ["node", "apps/landing/server.js"]

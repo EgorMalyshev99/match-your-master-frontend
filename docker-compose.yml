@@ -1,0 +1,27 @@
+version: "2"
+services:
+  dashboard:
+    container_name: dashboard-next
+    build:
+      context: .
+      dockerfile: docker/dashboard/Dockerfile
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    networks:
+      - turbo-network
+
+  landing:
+    container_name: landing-next
+    build:
+      context: .
+      dockerfile: docker/landing/Dockerfile
+    ports:
+      - "3001:3001"
+    restart: on-failure
+    networks:
+      - turbo-network
+
+networks:
+  turbo-network:
+    driver: bridge
