@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "packageManager": "pnpm@9.12.2",
   "dependencies": {
     "react": "^18",
     "react-dom": "^18",
