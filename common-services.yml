@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+    dashboard:
+        build:
+            context: .
+            dockerfile: ./apps/dashboard/.docker/Dockerfile
+            args:
+                - APP_DIR=${APP_DIR}
+                - PNPM_VERSION=${PNPM_VERSION}
+                - DOCKER_UID_GID=${DOCKER_UID_GID}
+        env_file:
+            - './apps/dashboard/.env'
+        restart: unless-stopped
+        tty: true
+
+    landing:
+        build:
+            context: .
+            dockerfile: ./apps/landing/.docker/Dockerfile
+            args:
+                - APP_DIR=${APP_DIR}
+                - PNPM_VERSION=${PNPM_VERSION}
+                - DOCKER_UID_GID=${DOCKER_UID_GID}
+        env_file:
+            - './apps/landing/.env'
+        restart: unless-stopped
+        tty: true
