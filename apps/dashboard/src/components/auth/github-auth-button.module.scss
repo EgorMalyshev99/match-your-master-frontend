@@ -1,0 +1,10 @@
+.githubButton {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 5px;
+  color: theme('colors.white');
+  background-color: theme('colors.black');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

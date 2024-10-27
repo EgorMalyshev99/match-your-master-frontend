@@ -1,7 +1,7 @@
 import React from "react";
-import Control from "@/components/inputs/control/Control";
+import Control from "@/components/ui/Control";
 import { ButtonSize, ButtonVariant } from "@/enums/button";
-import Button from "@/components/button/Button";
+import Button from "@/components/ui/Button";
 
 const Signup = () => {
   return (

@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import s from "./profile.module.scss";
-import UserCard from "@/components/cards/UserCard";
+import UserCard from "@/components/ui/cards/UserCard";
 import useSessionStore from "@/store/session";
 import { redirect } from "next/navigation";
 import { Route } from "@/enums/navigation";
 import UserInfo from "@/components/user/UserInfo";
-import PhoneCard from "@/components/cards/PhoneCard";
+import PhoneCard from "@/components/ui/cards/PhoneCard";
 
 const Profile = () => {
   const { user } = useSessionStore();

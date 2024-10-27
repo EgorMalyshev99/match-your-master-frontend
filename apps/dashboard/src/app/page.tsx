@@ -1,12 +1,10 @@
-"use client";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Route } from "@/enums/navigation";
-import useSessionStore from "@/store/session";
 
-export default function Home() {
-  const { user } = useSessionStore();
-
-  if (user) {
+export default async function Home() {
+  const session = await auth();
+  if (session) {
     redirect(Route.PROFILE);
   } else {
     redirect(Route.LOGIN);

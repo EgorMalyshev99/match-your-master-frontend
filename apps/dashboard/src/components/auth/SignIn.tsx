@@ -1,8 +1,8 @@
-"use client";
 import React from "react";
-import Control from "@/components/inputs/control/Control";
-import Button from "@/components/button/Button";
+import Control from "@/components/ui/Control";
+import Button from "@/components/ui/Button";
 import { ButtonSize, ButtonVariant } from "@/enums/button";
+import GithubAuthButton from "@/components/auth/GithubAuthButton";
 
 const Login = () => {
   return (
@@ -32,6 +32,9 @@ const Login = () => {
         >
           Log in
         </Button>
+        <div className="mt-2">
+          <GithubAuthButton className="w-full" />
+        </div>
       </form>
     </div>
   );

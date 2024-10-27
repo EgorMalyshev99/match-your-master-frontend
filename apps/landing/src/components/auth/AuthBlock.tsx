@@ -10,6 +10,7 @@ import { mockUser } from "@/mock";
 import { publicConfig } from "@/config";
 import { useClickOutside } from "@react-hooks-library/core";
 import { Route } from "@/enums/navigation";
+import { useSession } from "next-auth/react";
 
 interface Props {
   className?: string;
@@ -17,6 +18,8 @@ interface Props {
 
 const AuthBlock = ({ className = "" }: Props) => {
   const { user, login, logout } = useSessionStore();
+  const { data } = useSession();
+  console.log(data);
   const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
