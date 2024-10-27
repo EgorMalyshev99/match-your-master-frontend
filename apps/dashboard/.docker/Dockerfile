@@ -1,28 +1,37 @@
 FROM node:20.14.0-alpine AS base
 
+
 FROM base AS builder
 
+ARG APP_DIR
+
 RUN apk update
 RUN apk add --no-cache libc6-compat
-# Set working directory
-WORKDIR /app
+
+WORKDIR $APP_DIR
+
 RUN npm install -g turbo
+
 COPY . .
+
 RUN turbo prune dashboard --docker
 
-# Add lockfile and package.json's of isolated subworkspace
+
 FROM base AS installer
+
+ARG APP_DIR
+ARG PNPM_VERSION
+
 RUN apk update
 RUN apk add --no-cache libc6-compat
-WORKDIR /app
 
-# First install the dependencies (as they change less often)
+WORKDIR $APP_DIR
+
 COPY --from=builder /app/out/json/ .
 
-RUN npm install -g pnpm@9.12.2
+RUN npm install -g pnpm@$PNPM_VERSION
 RUN pnpm install
 
-# Build the project
 COPY --from=builder /app/out/full/ .
 
 # Uncomment and use build args to enable remote caching
@@ -34,17 +43,21 @@ COPY --from=builder /app/out/full/ .
 
 RUN pnpm turbo build --filter=dashboard...
 
-FROM base AS runner
-WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+FROM base AS runner
+
+ARG APP_DIR
+ARG DOCKER_UID_GID
+
+WORKDIR $APP_DIR
+
+RUN adduser -S -s /bin/bash -u $DOCKER_UID_GID -D -h /home/appuser appuser
+USER $DOCKER_UID_GID:$DOCKER_UID_GID
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/dashboard/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/dashboard/.next/static ./apps/dashboard/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/dashboard/public ./apps/dashboard/public
+COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/dashboard/.next/standalone ./
+COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/dashboard/.next/static ./apps/dashboard/.next/static
+COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/dashboard/public ./apps/dashboard/public
 
 CMD node apps/dashboard/server.js

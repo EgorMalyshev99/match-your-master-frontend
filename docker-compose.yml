@@ -1,12 +1,10 @@
 services:
 
     dashboard:
+        extends:
+            file: common-services.yml
+            service: dashboard
         container_name: frontend-dashboard
-        build:
-            context: .
-            dockerfile: ./apps/dashboard/.docker/Dockerfile
-        restart: unless-stopped
-        tty: true
         ports:
             - "3000:3000"
         environment:
@@ -16,12 +14,10 @@ services:
             - mym-network
 
     landing:
+        extends:
+            file: common-services.yml
+            service: landing
         container_name: frontend-landing
-        build:
-            context: .
-            dockerfile: ./apps/landing/.docker/Dockerfile
-        restart: unless-stopped
-        tty: true
         ports:
             - "3001:3001"
         environment:
