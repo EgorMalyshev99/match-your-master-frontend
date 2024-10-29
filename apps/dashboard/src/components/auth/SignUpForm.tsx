@@ -64,6 +64,7 @@ const SignUpForm = ({ className }: Props) => {
                 Email
               </Text>
             }
+            type="email"
             placeholder="Введите Email"
             key={form.key("email")}
             {...form.getInputProps("email")}

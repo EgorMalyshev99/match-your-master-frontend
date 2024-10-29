@@ -1,3 +1,11 @@
+export const validateRequired = (value: string | undefined | null) => {
+  if (!value) {
+    return "Это поле необходимо заполнить";
+  }
+
+  return null;
+};
+
 export const validateEmail = (email: string | null) => {
   if (!email) {
     return "Необходимо ввести email";

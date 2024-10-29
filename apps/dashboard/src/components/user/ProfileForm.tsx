@@ -6,23 +6,45 @@ import {
   Card,
   Fieldset,
   Grid,
+  Group,
   Radio,
-  Stack,
   Text,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import { DateInput, DatesProvider } from "@mantine/dates";
 import "dayjs/locale/ru";
+import { EmailContactType } from "@/enums/profile_form";
+import { useForm } from "@mantine/form";
+import { validateRequired } from "@/lib/validation";
+
+interface Inputs {}
 
 const ProfileForm = () => {
-  const onSubmit = (evt: React.FormEvent) => {
-    evt.preventDefault();
-    console.log(evt);
+  const form = useForm<Inputs>({
+    mode: "uncontrolled",
+    initialValues: {
+      first_name: "",
+      last_name: "",
+      birth_date: "",
+      region: "",
+    },
+    validateInputOnChange: true,
+    validate: {
+      first_name: validateRequired,
+      last_name: validateRequired,
+      birth_date: validateRequired,
+      region: validateRequired,
+    },
+  });
+
+  const submitHandler = (values: Inputs) => {
+    console.log(values);
   };
 
   return (
     <>
-      <form className={s.userInfo} onSubmit={onSubmit}>
+      <form className={s.userInfo} onSubmit={form.onSubmit(submitHandler)}>
         <Card shadow="md" padding="lg" radius="md">
           <Fieldset
             legend={
@@ -41,6 +63,7 @@ const ProfileForm = () => {
                     </Text>
                   }
                   placeholder="Введите имя"
+                  {...form.getInputProps("first_name")}
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
@@ -51,6 +74,7 @@ const ProfileForm = () => {
                     </Text>
                   }
                   placeholder="Введите фамилию"
+                  {...form.getInputProps("last_name")}
                 />
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
@@ -71,6 +95,7 @@ const ProfileForm = () => {
                       </Text>
                     }
                     placeholder="Выберите дату"
+                    {...form.getInputProps("birth_date")}
                   />
                 </DatesProvider>
               </Grid.Col>
@@ -81,6 +106,7 @@ const ProfileForm = () => {
                       Город
                     </Text>
                   }
+                  {...form.getInputProps("birth_date")}
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -113,18 +139,27 @@ const ProfileForm = () => {
                 <Text fw={600} size="xs" className="mb-8">
                   Email для связи
                 </Text>
-                <Stack>
-                  <Radio
-                    checked={true}
-                    onChange={() => {}}
-                    label="Использовать почту аккаунта"
-                  />
-                  <Radio
-                    checked={false}
-                    onChange={() => {}}
-                    label="Использовать рабочую почту"
-                  />
-                </Stack>
+                <Radio.Group name="email_contact_type" mb="sm">
+                  <Group>
+                    <Tooltip label="Почта, которую вы указали при регистрации">
+                      <Radio
+                        checked={true}
+                        onChange={() => {}}
+                        label="Почта аккаунта"
+                        value={EmailContactType.self}
+                      />
+                    </Tooltip>
+                    <Tooltip label="Укажите рабочую почту">
+                      <Radio
+                        checked={false}
+                        onChange={() => {}}
+                        label="Рабочая почта"
+                        value={EmailContactType.work}
+                      />
+                    </Tooltip>
+                  </Group>
+                </Radio.Group>
+                <TextInput type="email" placeholder="Рабочая почта" />
               </Grid.Col>
             </Grid>
           </Fieldset>
