@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Button from "@/components/ui/Button";
 import { publicConfig } from "@/config";
 import { API_PATHS } from "@/enums/api";
+import { Button, Flex } from "@mantine/core";
 
 const Test = () => {
   const [data, setData] = useState<string | null>("{}");
@@ -31,7 +31,7 @@ const Test = () => {
   }, []);
 
   return (
-    <div className="w-full h-full flex items-center justify-center flex-col">
+    <Flex align="center" justify="center" direction="column">
       {loading ? (
         <div className="font-medium text-lg">Loading...</div>
       ) : data ? (
@@ -42,7 +42,7 @@ const Test = () => {
       <Button className="mt-4" onClick={() => requestData()}>
         Запросить данные
       </Button>
-    </div>
+    </Flex>
   );
 };
 

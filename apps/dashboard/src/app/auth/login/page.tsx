@@ -1,10 +1,13 @@
 import React from "react";
-import SignIn from "@/components/auth/SignIn";
+import SignIn from "@/components/auth/SignInForm";
+import s from "./login.module.scss";
 
 const Login = async () => {
   return (
-    <div className="flex justify-center items-center">
-      <SignIn />
+    <div className={s.login}>
+      <div className="container">
+        <SignIn />
+      </div>
     </div>
   );
 };

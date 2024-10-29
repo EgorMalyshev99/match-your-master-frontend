@@ -1,7 +1,7 @@
 import React from "react";
 import Control from "@/components/inputs/control/Control";
 import { ButtonSize, ButtonVariant } from "@/enums/button";
-import Button from "@/components/button/Button";
+import UiButton from "@/components/button/UiButton";
 
 const Signup = () => {
   return (
@@ -9,9 +9,9 @@ const Signup = () => {
       <form action="">
         <div className="form-group">
           <label className="label" htmlFor="login">
-            Логин
+            Email
           </label>
-          <Control id="login" name="login" placeholder="Придумайте логин" />
+          <Control id="login" name="login" placeholder="Придумайте Email" />
         </div>
         <div className="form-group">
           <label className="label" htmlFor="password">
@@ -30,13 +30,13 @@ const Signup = () => {
           </label>
           <Control id="password" type="password" name="password" />
         </div>
-        <Button
+        <UiButton
           className="w-full"
           variant={ButtonVariant.primary}
           size={ButtonSize.lg}
         >
           Sign up
-        </Button>
+        </UiButton>
       </form>
     </div>
   );

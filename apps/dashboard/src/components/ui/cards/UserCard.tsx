@@ -1,23 +1,27 @@
 import React from "react";
 import s from "./user-card.module.scss";
 import Image from "next/image";
-import { User } from "@/models/user";
+import { User } from "next-auth";
 
 interface Props {
   user: User;
 }
 
 const UserCard = ({ user }: Props) => {
+  if (!user.name || !user.image) {
+    return null;
+  }
+
   return (
     <div className={s.userCard}>
       <Image
-        src={user.avatar}
+        src={user.image}
         className={`${s.userAvatar} mb-2`}
-        width={150}
-        height={150}
-        alt={user.firstName}
+        width={120}
+        height={120}
+        alt={user.name}
       />
-      <div className={s.userName}>{`${user.firstName} ${user.lastName}`}</div>
+      <div className={s.userName}>{`${user.name}`}</div>
     </div>
   );
 };

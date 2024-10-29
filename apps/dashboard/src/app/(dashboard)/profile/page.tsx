@@ -2,31 +2,33 @@
 import React from "react";
 import s from "./profile.module.scss";
 import UserCard from "@/components/ui/cards/UserCard";
-import useSessionStore from "@/store/session";
-import { redirect } from "next/navigation";
-import { Route } from "@/enums/navigation";
-import UserInfo from "@/components/user/UserInfo";
+import ProfileForm from "@/components/user/ProfileForm";
 import PhoneCard from "@/components/ui/cards/PhoneCard";
+import { useSession } from "next-auth/react";
+import { Flex, Grid, GridCol } from "@mantine/core";
 
 const Profile = () => {
-  const { user } = useSessionStore();
-  if (!user) {
-    redirect(Route.LOGIN);
+  const { data } = useSession();
+  const githubUser = data?.user;
+  if (!githubUser) {
+    return null;
   }
 
   return (
     <div className={s.profile}>
-      <div className="grid grid-cols-3">
-        <div className="col-span-2">
-          <div className="flex justify-center mb-6">
-            <UserCard user={user} />
+      <Grid>
+        <GridCol span={8}>
+          <Flex justify="start" mb="md">
+            <UserCard user={githubUser} />
+          </Flex>
+          <ProfileForm />
+        </GridCol>
+        <GridCol span={4}>
+          <div className={s.profilePhoneCard}>
+            <PhoneCard>Test</PhoneCard>
           </div>
-          <UserInfo user={user} />
-        </div>
-        <div>
-          <PhoneCard>Test</PhoneCard>
-        </div>
-      </div>
+        </GridCol>
+      </Grid>
     </div>
   );
 };

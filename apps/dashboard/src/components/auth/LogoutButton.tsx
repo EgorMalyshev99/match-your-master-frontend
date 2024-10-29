@@ -1,14 +1,17 @@
 "use client";
 import React from "react";
 import s from "./logout-button.module.scss";
-import useSessionStore from "@/store/session";
+import { signOut } from "next-auth/react";
+import { Route } from "@/enums/navigation";
 
 function LogoutButton() {
-  const { logout } = useSessionStore();
+  const logout = async () => {
+    await signOut({ redirectTo: Route.LOGIN });
+  };
 
   return (
-    <button className={s.logoutBtn} type="button" onClick={() => logout()}>
-      Log out
+    <button className={s.logoutBtn} type="button" onClick={logout}>
+      Выйти
     </button>
   );
 }

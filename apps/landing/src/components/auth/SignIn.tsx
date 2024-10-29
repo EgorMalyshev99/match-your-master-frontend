@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Control from "@/components/inputs/control/Control";
-import Button from "@/components/button/Button";
+import UiButton from "@/components/button/UiButton";
 import { ButtonSize, ButtonVariant } from "@/enums/button";
 
 const Login = () => {
@@ -10,9 +10,9 @@ const Login = () => {
       <form action="">
         <div className="form-group">
           <label className="label" htmlFor="login">
-            Логин
+            Email
           </label>
-          <Control id="login" name="login" placeholder="Введите логин" />
+          <Control id="login" name="login" placeholder="Введите Email" />
         </div>
         <div className="form-group">
           <label className="label" htmlFor="password">
@@ -25,13 +25,13 @@ const Login = () => {
             placeholder="Введите пароль"
           />
         </div>
-        <Button
+        <UiButton
           className="w-full"
           variant={ButtonVariant.primary}
           size={ButtonSize.lg}
         >
           Log in
-        </Button>
+        </UiButton>
       </form>
     </div>
   );

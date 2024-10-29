@@ -1,10 +1,10 @@
 import React from "react";
-import Header from "@/layout/header/Header";
-import UserSidebar from "@/layout/sidebar/UserSidebar";
-import UserContent from "@/layout/content/UserContent";
-import Footer from "@/layout/footer/Footer";
+import UserHeader from "@/components/layout/header/UserHeader";
+import UserSidebar from "@/components/layout/sidebar/UserSidebar";
+import UserContent from "@/components/layout/content/UserContent";
+import UserFooter from "@/components/layout/footer/UserFooter";
 import s from "./layout.module.scss";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Route } from "@/enums/navigation";
 
@@ -20,14 +20,14 @@ const Layout = async ({ children }: Props) => {
 
   return (
     <>
-      <Header />
+      <UserHeader />
       <main id="content">
         <div className={s.layout}>
           <UserSidebar />
           <UserContent>{children}</UserContent>
         </div>
       </main>
-      <Footer />
+      <UserFooter />
     </>
   );
 };

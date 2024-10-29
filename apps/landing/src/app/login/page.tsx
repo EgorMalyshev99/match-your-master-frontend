@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import Login from "@/components/auth/SignIn";
-import useSessionStore from "@/store/session";
 import { redirect } from "next/navigation";
-import { publicConfig } from "@/config";
+import { Route } from "@/enums/navigation";
+import { useSession } from "next-auth/react";
 
 const LoginPage = () => {
-  const { user } = useSessionStore();
-  if (user) {
-    redirect(publicConfig.dashHost);
+  const session = useSession();
+  if (!session) {
+    redirect(Route.LOGIN);
   }
 
   return (

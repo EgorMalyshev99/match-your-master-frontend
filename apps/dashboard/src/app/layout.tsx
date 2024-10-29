@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
-import "../css/global.css";
-import "../css/fonts.css";
-import "../css/forms.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import React from "react";
-import { SessionProvider } from "next-auth/react";
+import type { Metadata } from "next";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import { ColorSchemeScript } from "@mantine/core";
+import Provider from "@/components/providers/provider";
+import "@/scss/index.scss";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 
 config.autoAddCss = false;
 export const metadata: Metadata = {
@@ -19,9 +20,14 @@ interface Props {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body className="page-body">
-        <div className="content">{children}</div>
+        <Provider>
+          <div className="content">{children}</div>
+        </Provider>
       </body>
     </html>
   );

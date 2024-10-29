@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { TestResponse } from "@/models/test";
 import { getTest } from "@/api/test";
-import Button from "@/components/button/Button";
+import UiButton from "@/components/button/UiButton";
 
 const Test = () => {
   const [data, setData] = useState<TestResponse | null>(null);
@@ -37,9 +37,9 @@ const Test = () => {
       ) : (
         <div className="font-medium text-lg">Empty :(</div>
       )}
-      <Button className="mt-4" onClick={() => requestData()}>
+      <UiButton className="mt-4" onClick={() => requestData()}>
         Запросить данные
-      </Button>
+      </UiButton>
     </div>
   );
 };

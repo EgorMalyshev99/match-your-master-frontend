@@ -1,8 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import s from "./auth-block.module.scss";
-import useSessionStore from "@/store/session";
-import Button from "@/components/button/Button";
+import UiButton from "@/components/button/UiButton";
 import UserCard from "@/components/cards/UserCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDev } from "@fortawesome/free-brands-svg-icons";
@@ -10,16 +9,12 @@ import { mockUser } from "@/mock";
 import { publicConfig } from "@/config";
 import { useClickOutside } from "@react-hooks-library/core";
 import { Route } from "@/enums/navigation";
-import { useSession } from "next-auth/react";
 
 interface Props {
   className?: string;
 }
 
 const AuthBlock = ({ className = "" }: Props) => {
-  const { user, login, logout } = useSessionStore();
-  const { data } = useSession();
-  console.log(data);
   const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -79,14 +74,14 @@ const AuthBlock = ({ className = "" }: Props) => {
       ) : (
         <>
           {publicConfig.isDev ? (
-            <Button onClick={() => login(mockUser)}>
+            <UiButton onClick={() => login(mockUser)}>
               <FontAwesomeIcon icon={faDev} title="Войти тестово" />
-            </Button>
+            </UiButton>
           ) : (
             <></>
           )}
-          <Button route={Route.LOGIN}>Войти</Button>
-          <Button route={Route.SIGNUP}>Зарегистрироваться</Button>
+          <UiButton route={Route.LOGIN}>Войти</UiButton>
+          <UiButton route={Route.SIGNUP}>Зарегистрироваться</UiButton>
         </>
       )}
     </div>

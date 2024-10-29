@@ -1,20 +1,17 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import s from "./github-auth-button.module.scss";
+import { signIn } from "next-auth/react";
 import { Route } from "@/enums/navigation";
-import { signIn } from "@/auth";
 
 interface Props {
   className?: string;
 }
 
-async function getSignIn() {
-  return await signIn("github", { callbackUrl: Route.PROFILE });
-}
-
 const GithubAuthButton = ({ className = "" }: Props) => {
   const loginClickHandler = async () => {
-    await getSignIn();
+    await signIn("github", { redirectTo: Route.PROFILE });
   };
 
   return (
@@ -30,7 +27,7 @@ const GithubAuthButton = ({ className = "" }: Props) => {
         className="mr-2"
         alt="GitHub"
       />
-      Login via GitHub
+      Войти через GitHub
     </button>
   );
 };

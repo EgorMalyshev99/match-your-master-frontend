@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "../css/global.css";
 import "../css/fonts.css";
 import "../css/forms.css";
-import Header from "@/layout/header/Header";
-import Footer from "@/layout/footer/Footer";
+import Header from "@/components/layout/header/Header";
+import Footer from "@/components/layout/footer/Footer";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
