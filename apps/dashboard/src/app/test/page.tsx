@@ -1,12 +1,13 @@
 import s from "./test.module.scss";
 import TestComponent from "@/components/test";
+import { Container } from "@mantine/core";
 
 const Test = () => {
   return (
     <div className={s.test}>
-      <div className="container">
+      <Container size="lg">
         <TestComponent />
-      </div>
+      </Container>
     </div>
   );
 };

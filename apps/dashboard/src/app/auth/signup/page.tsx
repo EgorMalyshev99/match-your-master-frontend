@@ -1,15 +1,14 @@
 import React from "react";
-import SignInForm from "@/components/auth/SignInForm";
-import s from "./login.module.scss";
-import Image from "next/image";
+import s from "./signup.module.scss";
 import { Button, Container, Divider } from "@mantine/core";
-import GithubAuthButton from "@/components/auth/GithubAuthButton";
+import Image from "next/image";
+import SignUpForm from "@/components/auth/SignUpForm";
 import Link from "next/link";
 import { Route } from "@/enums/navigation";
 
-const Login = async () => {
+const Signup = () => {
   return (
-    <div className={s.login}>
+    <div className={s.signup}>
       <Container size="lg">
         <div className={s.content}>
           <Image
@@ -20,23 +19,21 @@ const Login = async () => {
             priority
             alt="Logo"
           />
-          <SignInForm />
+          <SignUpForm />
+          <Divider label="или" className="my-8" />
           <Button
-            className="mt-6"
             size="md"
             variant="outline"
             component={Link}
-            href={Route.SIGNUP}
+            href={Route.LOGIN}
             fullWidth
           >
-            Регистрация
+            Войти через email
           </Button>
-          <Divider my="md" label="или" labelPosition="center" />
-          <GithubAuthButton />
         </div>
       </Container>
     </div>
   );
 };
 
-export default Login;
+export default Signup;

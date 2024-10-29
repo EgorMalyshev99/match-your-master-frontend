@@ -13,6 +13,7 @@ const PhoneCard = ({ children }: Props) => {
         width={370}
         height={726}
         src="/img/iphone-template.png"
+        priority
         alt="Phone"
       />
       <div className={s.phoneContent}>{children}</div>
