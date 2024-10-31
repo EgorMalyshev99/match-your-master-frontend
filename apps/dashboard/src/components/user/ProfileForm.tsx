@@ -27,14 +27,14 @@ const ProfileForm = () => {
       first_name: "",
       last_name: "",
       birth_date: "",
-      region: "",
+      city: "",
     },
     validateInputOnChange: true,
     validate: {
       first_name: validateRequired,
       last_name: validateRequired,
       birth_date: validateRequired,
-      region: validateRequired,
+      city: validateRequired,
     },
   });
 
@@ -87,7 +87,7 @@ const ProfileForm = () => {
                   }}
                 >
                   <DateInput
-                    valueFormat="DD.MM.YYYY"
+                    valueFormat="YYYY-MM-DD"
                     defaultLevel="year"
                     label={
                       <Text fw={600} size="xs" className="mb-4">
@@ -106,7 +106,7 @@ const ProfileForm = () => {
                       Город
                     </Text>
                   }
-                  {...form.getInputProps("birth_date")}
+                  {...form.getInputProps("city")}
                 />
               </Grid.Col>
               <Grid.Col span={12}>
