@@ -1,17 +1,11 @@
 import { z } from "zod";
 
-const userSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
+const userProfileSchema = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
   avatar: z.string(),
-  age: z.string(),
-  qualification: z.string(),
+  birth_date: z.string(),
   city: z.string(),
-  phone: z.string(),
-  email: z.string().nullable(),
-  telegram: z.string().nullable(),
-  whatsApp: z.string().nullable(),
-  personalWebsite: z.string().nullable(),
 });
 
-export type User = z.infer<typeof userSchema>;
+export type UserProfile = z.infer<typeof userProfileSchema>;

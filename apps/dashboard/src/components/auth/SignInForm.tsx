@@ -28,7 +28,6 @@ interface Inputs {
 
 const SignInForm = ({ className }: Props) => {
   const [cookies, setCookie] = useCookies(["XSRF-TOKEN", "XDEBUG_SESSION"]);
-  setCookie("XDEBUG_SESSION", "1");
 
   const form = useForm<Inputs>({
     mode: "uncontrolled",
@@ -64,6 +63,7 @@ const SignInForm = ({ className }: Props) => {
   };
 
   useEffect(() => {
+    setCookie("XDEBUG_SESSION", "1");
     fetch(`${publicConfig.apiHost}${API_PATHS.csrf}`, {
       method: "GET",
       credentials: "include",

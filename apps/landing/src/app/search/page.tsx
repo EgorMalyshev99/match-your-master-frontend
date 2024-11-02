@@ -1,14 +1,15 @@
 import React from "react";
 import s from "./search.module.scss";
-import SearchStatus from "@/app/ui/SearchStatus";
+import { Container } from "@mantine/core";
+import SearchStatus from "@/components/SearchStatus";
 
 const Search = () => {
   return (
     <div className={s.search}>
-      <div className="container">
+      <Container size="xl">
         <h1 className={s.title}>Найди своего мастера</h1>
         <SearchStatus />
-      </div>
+      </Container>
     </div>
   );
 };

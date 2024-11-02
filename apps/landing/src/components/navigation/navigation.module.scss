@@ -8,9 +8,9 @@
 .navLink {
   font-size: 18px;
   font-weight: 500;
-  color: theme('colors.black');
+  color: var(--mantine-color-black);
 
   &Active {
-    color: theme('colors.primary.400');
+    color: var(--mantine-primary-color-4);
   }
 }

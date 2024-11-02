@@ -9,6 +9,16 @@ const nextConfig = {
   reactStrictMode: false,
   experimental: {
     outputFileTracingRoot: path.join(__dirname, "../../"),
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        pathname: "/u/**",
+      },
+    ],
   },
 };
 

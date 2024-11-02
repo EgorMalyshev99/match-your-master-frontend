@@ -3,32 +3,14 @@ import React from "react";
 import s from "./navigation.module.scss";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Route } from "@/enums/navigation";
+import { HEADER_MENU_ITEMS } from "@/const";
 
 const Navigation = () => {
   const pathname = usePathname();
-  const elements = [
-    {
-      route: Route.HOME,
-      label: "Главная",
-    },
-    {
-      route: Route.SEARCH,
-      label: "Поиск мастеров",
-    },
-    {
-      route: Route.FAQ,
-      label: "FAQ",
-    },
-    {
-      route: Route.CONTACTS,
-      label: "Контакты",
-    },
-  ];
 
   return (
     <nav className={s.nav}>
-      {elements.map((element) => (
+      {HEADER_MENU_ITEMS.map((element) => (
         <Link
           key={element.route}
           href={element.route}
