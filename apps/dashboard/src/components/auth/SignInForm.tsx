@@ -28,6 +28,8 @@ interface Inputs {
 
 const SignInForm = ({ className }: Props) => {
   const [cookies, setCookie] = useCookies(["XSRF-TOKEN", "XDEBUG_SESSION"]);
+  setCookie("XDEBUG_SESSION", "1");
+
   const form = useForm<Inputs>({
     mode: "uncontrolled",
     initialValues: {
@@ -54,7 +56,7 @@ const SignInForm = ({ className }: Props) => {
     });
 
     const data = await res.json();
-    console.log(data);
+    alert(data);
     // await signIn("credentials", {
     //   redirectTo: Route.PROFILE,
     //   ...values,
@@ -62,12 +64,13 @@ const SignInForm = ({ className }: Props) => {
   };
 
   useEffect(() => {
-    setCookie("XDEBUG_SESSION", "1");
     fetch(`${publicConfig.apiHost}${API_PATHS.csrf}`, {
       method: "GET",
       credentials: "include",
+    }).then(() => {
+      alert(cookies["XSRF-TOKEN"]);
     });
-  }, [setCookie]);
+  }, []);
 
   return (
     <div className={`${s.signIn} ${className}`}>
