@@ -89,7 +89,7 @@ const ProfileForm = () => {
                   }}
                 >
                   <DateInput
-                    valueFormat="DD.MM.YYYY"
+                    valueFormat="YYYY-MM-DD"
                     defaultLevel="year"
                     label={
                       <Text fw={600} size="xs" className="mb-4">
