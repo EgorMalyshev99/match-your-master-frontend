@@ -18,7 +18,7 @@ const Profile = () => {
     <div className={s.profile}>
       <Grid>
         <GridCol span={8}>
-          <Flex justify="start" mb="md">
+          <Flex justify="center" mb="md">
             <UserCard user={githubUser} />
           </Flex>
           <ProfileForm />

@@ -2,7 +2,6 @@ import { Route } from "@/enums/navigation";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faUser,
-  faBriefcase,
   faEnvelope,
   faWallet,
   faChartSimple,
@@ -22,18 +21,13 @@ export const PROFILE_MENU_ITEMS: MenuItem[] = [
     icon: faUser,
   },
   {
-    label: "Портфолио",
-    path: Route.PORTFOLIO,
-    icon: faBriefcase,
-  },
-  {
-    label: "Предложения",
+    label: "Объявления",
     path: Route.OFFERS,
     icon: faEnvelope,
   },
   {
-    label: "Выплаты",
-    path: Route.PAYOUTS,
+    label: "Подписка",
+    path: Route.SUBSCRIPTION,
     icon: faWallet,
   },
   {

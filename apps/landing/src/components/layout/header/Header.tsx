@@ -1,24 +1,23 @@
 import s from "./header.module.scss";
 import Navigation from "@/components/navigation/Navigation";
 import Image from "next/image";
-import AuthBlock from "@/components/auth/AuthBlock";
 import Link from "next/link";
 import { Route } from "@/enums/navigation";
+import { Container, Flex } from "@mantine/core";
 
 const Header = () => {
   return (
     <header className={s.header}>
-      <div className="container">
+      <Container size="xl">
         <div className={s.headerInner}>
-          <div className="flex items-center">
-            <Link href={Route.HOME} className="mr-8">
+          <Flex align="center">
+            <Link href={Route.HOME} className="mr-20">
               <Image src="/img/logo.webp" width={70} height={70} alt="Logo" />
             </Link>
             <Navigation />
-          </div>
-          <AuthBlock className="ml-auto" />
+          </Flex>
         </div>
-      </div>
+      </Container>
     </header>
   );
 };

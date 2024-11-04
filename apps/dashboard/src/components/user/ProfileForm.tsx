@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import s from "./profile-form.module.scss";
 import {
   Button,
@@ -21,20 +21,22 @@ import { validateRequired } from "@/lib/validation";
 interface Inputs {}
 
 const ProfileForm = () => {
+  const [isWordEmailUsed, setIsWordEmailUsed] = useState<boolean>(false);
+
   const form = useForm<Inputs>({
     mode: "uncontrolled",
     initialValues: {
       first_name: "",
       last_name: "",
       birth_date: "",
-      region: "",
+      city: "",
     },
     validateInputOnChange: true,
     validate: {
       first_name: validateRequired,
       last_name: validateRequired,
       birth_date: validateRequired,
-      region: validateRequired,
+      city: validateRequired,
     },
   });
 
@@ -87,7 +89,7 @@ const ProfileForm = () => {
                   }}
                 >
                   <DateInput
-                    valueFormat="DD.MM.YYYY"
+                    valueFormat="YYYY-MM-DD"
                     defaultLevel="year"
                     label={
                       <Text fw={600} size="xs" className="mb-4">
@@ -106,7 +108,7 @@ const ProfileForm = () => {
                       Город
                     </Text>
                   }
-                  {...form.getInputProps("birth_date")}
+                  {...form.getInputProps("city")}
                 />
               </Grid.Col>
               <Grid.Col span={12}>
@@ -144,7 +146,9 @@ const ProfileForm = () => {
                     <Tooltip label="Почта, которую вы указали при регистрации">
                       <Radio
                         checked={true}
-                        onChange={() => {}}
+                        onChange={() => {
+                          setIsWordEmailUsed(false);
+                        }}
                         label="Почта аккаунта"
                         value={EmailContactType.self}
                       />
@@ -152,14 +156,25 @@ const ProfileForm = () => {
                     <Tooltip label="Укажите рабочую почту">
                       <Radio
                         checked={false}
-                        onChange={() => {}}
+                        onChange={() => {
+                          setIsWordEmailUsed(true);
+                        }}
                         label="Рабочая почта"
                         value={EmailContactType.work}
                       />
                     </Tooltip>
                   </Group>
                 </Radio.Group>
-                <TextInput type="email" placeholder="Рабочая почта" />
+                {isWordEmailUsed ? (
+                  <TextInput type="email" placeholder="Рабочая почта" />
+                ) : (
+                  ""
+                )}
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Button type="submit" size="sm">
+                  Сохранить
+                </Button>
               </Grid.Col>
             </Grid>
           </Fieldset>

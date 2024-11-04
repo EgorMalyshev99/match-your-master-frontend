@@ -5,7 +5,7 @@ services:
     dashboard:
         build:
             context: .
-            dockerfile: ./apps/dashboard/.docker/Dockerfile
+            dockerfile: apps/dashboard/.docker/Dockerfile
             args:
                 - APP_DIR=${APP_DIR}
                 - PNPM_VERSION=${PNPM_VERSION}
@@ -18,7 +18,7 @@ services:
     landing:
         build:
             context: .
-            dockerfile: ./apps/landing/.docker/Dockerfile
+            dockerfile: apps/landing/.docker/Dockerfile
             args:
                 - APP_DIR=${APP_DIR}
                 - PNPM_VERSION=${PNPM_VERSION}

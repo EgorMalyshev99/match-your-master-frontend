@@ -1,7 +1,7 @@
 .header {
   padding: 15px 0;
-  background-color: theme('colors.background');
-  border-bottom: 1px solid theme('colors.gray.300');
+  background-color: var(--background);
+  border-bottom: 1px solid var(--mantine-color-gray-3);
 }
 
 .headerInner {

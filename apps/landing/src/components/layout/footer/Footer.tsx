@@ -1,9 +1,10 @@
 import s from "./footer.module.scss";
+import { Container } from "@mantine/core";
 
 const Footer = () => {
   return (
     <footer className={s.footer}>
-      <div className="container"></div>
+      <Container size="xl"></Container>
     </footer>
   );
 };

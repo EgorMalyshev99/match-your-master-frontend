@@ -3,9 +3,8 @@ export enum Route {
   LOGIN = "/auth/login",
   SIGNUP = "/auth/signup",
   PROFILE = "/profile",
-  PORTFOLIO = "/portfolio",
   OFFERS = "/offers",
-  PAYOUTS = "/payouts",
+  SUBSCRIPTION = "/subscription",
   STAT = "/stat",
   SETTINGS = "/settings",
 }
