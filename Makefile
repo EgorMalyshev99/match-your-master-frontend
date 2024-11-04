@@ -5,9 +5,5 @@ init:
 	make up
 up:
 	docker compose -f docker-compose.yml up -d --build
-up-dev:
-	docker compose -f docker-compose-dev.yml up -d --build
 down:
 	docker compose -f docker-compose.yml down
-down-dev:
-	docker compose -f docker-compose-dev.yml down
