@@ -70,7 +70,7 @@ const SignInForm = ({ className }: Props) => {
     }).then(() => {
       alert(cookies["XSRF-TOKEN"]);
     });
-  }, []);
+  }, [cookies, setCookie]);
 
   return (
     <div className={`${s.signIn} ${className}`}>
