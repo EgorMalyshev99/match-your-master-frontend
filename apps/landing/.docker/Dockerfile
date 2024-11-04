@@ -12,9 +12,9 @@ WORKDIR $APP_DIR
 
 RUN npm install -g turbo
 
-COPY . .
+COPY prod .
 
-RUN turbo prune dashboard --docker
+RUN turbo prune landing --docker
 
 
 FROM base AS installer
@@ -41,7 +41,7 @@ COPY --from=builder /app/out/full/ .
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN pnpm turbo build --filter=dashboard...
+RUN pnpm turbo build --filter=landing...
 
 
 FROM base AS runner
@@ -56,8 +56,8 @@ USER $DOCKER_UID_GID:$DOCKER_UID_GID
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/dashboard/.next/standalone ./
-COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/dashboard/.next/static ./apps/dashboard/.next/static
-COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/dashboard/public ./apps/dashboard/public
+COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/landing/.next/standalone ./
+COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/landing/.next/static ./apps/landing/.next/static
+COPY --from=installer --chown=$DOCKER_UID_GID:$DOCKER_UID_GID /app/apps/landing/public ./apps/landing/public
 
-CMD node apps/dashboard/server.js
+CMD node apps/landing/server.js
