@@ -12,7 +12,7 @@ WORKDIR $APP_DIR
 
 RUN npm install -g turbo
 
-COPY prod .
+COPY . .
 
 RUN turbo prune dashboard --docker
 
