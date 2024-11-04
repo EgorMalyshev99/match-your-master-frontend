@@ -12,9 +12,10 @@ import {
 // import { Route } from "@/enums/navigation";
 import { useForm } from "@mantine/form";
 import { validateEmail, validatePassword } from "@/lib/validation";
+import { getCookie } from "cookies-next";
 import { API_PATHS } from "@/const";
-import { useCookies } from "react-cookie";
 import { publicConfig } from "@/config";
+import axios from "axios";
 
 interface Props {
   className?: string;
@@ -26,9 +27,10 @@ interface Inputs {
   remember_me: boolean;
 }
 
-const SignInForm = ({ className }: Props) => {
-  const [cookies, setCookie] = useCookies(["XSRF-TOKEN", "XDEBUG_SESSION"]);
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 
+const SignInForm = ({ className }: Props) => {
   const form = useForm<Inputs>({
     mode: "uncontrolled",
     initialValues: {
@@ -44,18 +46,19 @@ const SignInForm = ({ className }: Props) => {
   });
 
   const handleSubmit = async (values: Inputs) => {
-    console.log(values, cookies);
-    const res = await fetch(`${publicConfig.apiHost}${API_PATHS.login}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-XSRF-TOKEN": cookies["XSRF-TOKEN"],
+    console.log(values);
+    const res = await axios.post(
+      `${publicConfig.apiHost}${API_PATHS.login}`,
+      values,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") ?? "",
+        },
       },
-      body: JSON.stringify(values),
-    });
+    );
 
-    const data = await res.json();
-    alert(data);
+    console.log(res.data);
     // await signIn("credentials", {
     //   redirectTo: Route.PROFILE,
     //   ...values,
@@ -63,14 +66,8 @@ const SignInForm = ({ className }: Props) => {
   };
 
   useEffect(() => {
-    setCookie("XDEBUG_SESSION", "1");
-    fetch(`${publicConfig.apiHost}${API_PATHS.csrf}`, {
-      method: "GET",
-      credentials: "include",
-    }).then(() => {
-      alert(cookies["XSRF-TOKEN"]);
-    });
-  }, [cookies, setCookie]);
+    axios.get(`${publicConfig.apiHost}${API_PATHS.csrf}`);
+  }, []);
 
   return (
     <div className={`${s.signIn} ${className}`}>
