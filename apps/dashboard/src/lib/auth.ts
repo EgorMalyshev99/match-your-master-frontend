@@ -4,26 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { config } from "@/config";
 import { Route } from "@/enums/navigation";
 import { signInSchema } from "@/models/auth";
-import { API_PATHS } from "@/const";
 import { ZodError } from "zod";
-
-interface Credentials {
-  email: string;
-  password: string;
-}
-
-export const authorize = async (credentials: Credentials): Promise<User> => {
-  const res = await fetch(API_PATHS.login, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  });
-
-  const data = await res.json();
-  return data;
-};
 
 class InvalidDataTypeError extends CredentialsSignin {
   code = "Invalid data type";
@@ -33,29 +14,32 @@ class InvalidLoginError extends CredentialsSignin {
   code = "Invalid email or password";
 }
 
+const mockAuthorize = async (email: string): Promise<User | null> => {
+  return {
+    id: "1",
+    email: email,
+    name: "Test User",
+    image: "",
+  };
+};
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: { email: {}, password: {} },
       authorize: async (credentials) => {
         try {
-          let user = null;
-
-          console.log(credentials);
           const { email, password } =
             await signInSchema.parseAsync(credentials);
 
-          user = await authorize({
-            email: email,
-            password: password,
-          });
-
-          if (!user) {
-            throw new Error("User not found.");
+          if (!email || !password) {
+            throw new Error("Empty data.");
           }
 
-          return user;
+          return mockAuthorize(email);
         } catch (error) {
+          console.error(error);
+
           if (error instanceof ZodError) {
             throw new InvalidDataTypeError();
           }

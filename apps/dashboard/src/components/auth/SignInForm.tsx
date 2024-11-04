@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import s from "./sign-in-form.module.scss";
 import {
   Button,
@@ -8,14 +8,15 @@ import {
   Text,
   Checkbox,
 } from "@mantine/core";
-// import { signIn } from "next-auth/react";
-// import { Route } from "@/enums/navigation";
 import { useForm } from "@mantine/form";
 import { validateEmail, validatePassword } from "@/lib/validation";
-import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { API_PATHS } from "@/const";
-import { publicConfig } from "@/config";
 import axios from "axios";
+import { publicConfig } from "@/config";
+import { authorize } from "@/lib/requests";
+import { Route } from "@/enums/navigation";
+import { signIn } from "next-auth/react";
 
 interface Props {
   className?: string;
@@ -31,6 +32,8 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 const SignInForm = ({ className }: Props) => {
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const router = useRouter();
   const form = useForm<Inputs>({
     mode: "uncontrolled",
     initialValues: {
@@ -45,29 +48,37 @@ const SignInForm = ({ className }: Props) => {
     },
   });
 
-  const handleSubmit = async (values: Inputs) => {
-    console.log(values);
-    const res = await axios.post(
-      `${publicConfig.apiHost}${API_PATHS.login}`,
-      values,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") ?? "",
-        },
-      },
-    );
-
-    console.log(res.data);
-    // await signIn("credentials", {
-    //   redirectTo: Route.PROFILE,
-    //   ...values,
-    // });
+  const handleSubmit = (values: Inputs) => {
+    setDisabled(true);
+    axios
+      .get(`${publicConfig.apiHost}${API_PATHS.csrf}`)
+      .then(() => {
+        authorize(values)
+          .then(() => {
+            signIn("credentials", {
+              ...values,
+              redirect: false,
+            })
+              .then((response) => {
+                if (response?.status === 200) {
+                  router.push(Route.PROFILE);
+                }
+              })
+              .catch((nextAuthError) => {
+                setDisabled(false);
+                console.error(nextAuthError);
+              });
+          })
+          .catch((authError) => {
+            setDisabled(false);
+            console.error(authError);
+          });
+      })
+      .catch((xsrfError) => {
+        setDisabled(false);
+        console.error(1, xsrfError);
+      });
   };
-
-  useEffect(() => {
-    axios.get(`${publicConfig.apiHost}${API_PATHS.csrf}`);
-  }, []);
 
   return (
     <div className={`${s.signIn} ${className}`}>
@@ -83,6 +94,7 @@ const SignInForm = ({ className }: Props) => {
             placeholder="Введите Email"
             key={form.key("email")}
             {...form.getInputProps("email")}
+            disabled={disabled}
             mb="xs"
           />
           <PasswordInput
@@ -94,11 +106,13 @@ const SignInForm = ({ className }: Props) => {
             {...form.getInputProps("password")}
             key={form.key("password")}
             placeholder="Введите пароль"
+            disabled={disabled}
             mb="sm"
           />
           <Checkbox
             label="Запомнить меня"
             {...form.getInputProps("remember_me")}
+            disabled={disabled}
             key={form.key("remember_me")}
           />
           <Button className="mt-10" fullWidth size="md" type="submit">

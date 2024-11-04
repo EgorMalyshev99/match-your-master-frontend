@@ -3,7 +3,7 @@ import { z } from "zod";
 const userProfileSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
-  avatar: z.string(),
+  // avatar: z.string(),
   birth_date: z.string(),
   city: z.string(),
 });
