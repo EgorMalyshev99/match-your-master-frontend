@@ -49,6 +49,5 @@ export const API_PATHS = {
   resetPassword: "/auth/reset-password",
   emailVerify: "/auth/email-verify",
   csrf: "/auth/csrf-cookie",
-  getUserProfile: (id: string | number) => `/user/${id}/profile`,
-  getUserSettings: (id: string | number) => `/user/${id}/settings`,
+  userProfile: "/user/profile",
 };

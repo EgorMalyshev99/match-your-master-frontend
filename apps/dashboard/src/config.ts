@@ -1,4 +1,5 @@
 export const publicConfig = {
+  host: process.env.NEXT_PUBLIC_HOST,
   apiHost: process.env.NEXT_PUBLIC_API_HOST,
   githubHost: process.env.NEXT_PUBLIC_GITHUB_HOST,
   githubClientId: process.env.AUTH_GITHUB_ID as string,

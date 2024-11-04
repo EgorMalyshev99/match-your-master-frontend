@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./profile-form.module.scss";
 import {
   Button,
@@ -17,19 +17,23 @@ import "dayjs/locale/ru";
 import { EmailContactType } from "@/enums/profile_form";
 import { useForm } from "@mantine/form";
 import { validateRequired } from "@/lib/validation";
+import { useProfileStore } from "@/store/profile";
+import { getUserProfileData } from "@/lib/requests";
 
 interface Inputs {}
 
 const ProfileForm = () => {
   const [isWordEmailUsed, setIsWordEmailUsed] = useState<boolean>(false);
+  const { first_name, last_name, birth_date, city, setData } =
+    useProfileStore();
 
   const form = useForm<Inputs>({
     mode: "uncontrolled",
     initialValues: {
-      first_name: "",
-      last_name: "",
-      birth_date: "",
-      city: "",
+      first_name: first_name,
+      last_name: last_name,
+      birth_date: birth_date,
+      city: city,
     },
     validateInputOnChange: true,
     validate: {
@@ -43,6 +47,12 @@ const ProfileForm = () => {
   const submitHandler = (values: Inputs) => {
     console.log(values);
   };
+
+  useEffect(() => {
+    getUserProfileData().then((data) => {
+      setData(data);
+    });
+  }, [setData]);
 
   return (
     <>
