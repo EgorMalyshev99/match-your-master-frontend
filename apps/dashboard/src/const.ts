@@ -2,7 +2,6 @@ import { Route } from "@/enums/navigation";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faUser,
-  faBriefcase,
   faEnvelope,
   faWallet,
   faChartSimple,
