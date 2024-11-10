@@ -9,8 +9,9 @@
   },
   "devDependencies": {
     "prettier": "^3.2.5",
-    "turbo": "^2.2.1",
-    "typescript": "^5.4.5"
+    "turbo": "^2.2.3",
+    "typescript": "^5.4.5",
+    "eslint": "^8.57.0"
   },
   "packageManager": "pnpm@9.12.3",
   "engines": {
