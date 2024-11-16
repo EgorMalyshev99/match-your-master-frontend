@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 import s from "./sign-in-form.module.scss";
-import { Button, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Button, PasswordInput, Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { validateEmail, validatePassword } from "@/lib/validation";
 import { DateInput, DatesProvider } from "@mantine/dates";
+import { GENDERS } from "@/const";
 
 interface Props {
   className?: string;
@@ -14,6 +15,7 @@ interface Inputs {
   first_name: string;
   last_name: string;
   birth_date: string;
+  gender: string;
   city: string;
   email: string;
   password: string;
@@ -27,6 +29,7 @@ const SignUpForm = ({ className }: Props) => {
       first_name: "",
       last_name: "",
       birth_date: "",
+      gender: "",
       city: "",
       email: "",
       password: "",
@@ -103,6 +106,16 @@ const SignUpForm = ({ className }: Props) => {
             mb="xs"
           />
         </DatesProvider>
+        <Select
+          label={
+            <Text fw={600} size="sm" className="mb-3">
+              Ваш пол
+            </Text>
+          }
+          data={GENDERS}
+          defaultValue="male"
+          allowDeselect={false}
+        />
         <TextInput
           label={
             <Text fw={600} size="sm" className="mb-3">

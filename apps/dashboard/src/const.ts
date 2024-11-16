@@ -51,3 +51,5 @@ export const API_PATHS = {
   csrf: "/auth/csrf-cookie",
   userProfile: "/user/profile",
 };
+
+export const GENDERS = ["Мужской", "Женский"];

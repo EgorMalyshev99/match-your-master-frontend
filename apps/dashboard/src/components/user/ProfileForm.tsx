@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import s from "./profile-form.module.scss";
 import {
   Button,
   Card,
   Fieldset,
+  FileInput,
   Grid,
   Group,
   Radio,
@@ -19,6 +20,7 @@ import { useForm } from "@mantine/form";
 import { validateRequired } from "@/lib/validation";
 import { useProfileStore } from "@/store/profile";
 import { getUserProfileData } from "@/lib/requests";
+import { api } from "@/lib/api";
 
 interface Inputs {}
 
@@ -54,8 +56,34 @@ const ProfileForm = () => {
     });
   }, [setData]);
 
+  const onSubmit = async (evt: FormEvent) => {
+    evt.preventDefault();
+
+    const formData = new FormData(evt.target as HTMLFormElement);
+    const response = await api.post(
+      "http://api.match-your-master.local/user/image/avatar/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    console.log(response.data);
+  };
+
   return (
     <>
+      <form action="" onSubmit={onSubmit}>
+        <FileInput
+          name="image"
+          label="Input label"
+          description="Input description"
+          placeholder="Input placeholder"
+        />
+        <button type="submit">отправить</button>
+      </form>
+
       <form className={s.userInfo} onSubmit={form.onSubmit(submitHandler)}>
         <Card shadow="md" padding="lg" radius="md">
           <Fieldset
