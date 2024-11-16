@@ -21,6 +21,7 @@ import { validateRequired } from "@/lib/validation";
 import { useProfileStore } from "@/store/profile";
 import { getUserProfileData } from "@/lib/requests";
 import { api } from "@/lib/api";
+import Image from "next/image";
 
 interface Inputs {}
 
@@ -56,6 +57,7 @@ const ProfileForm = () => {
     });
   }, [setData]);
 
+  const [avatar, setAvatar] = useState<string | null>(null);
   const onSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
 
@@ -69,7 +71,9 @@ const ProfileForm = () => {
         },
       },
     );
-    console.log(response.data);
+
+    console.log(response.data.avatar);
+    setAvatar(response.data.avatar);
   };
 
   return (
@@ -81,6 +85,11 @@ const ProfileForm = () => {
           description="Input description"
           placeholder="Input placeholder"
         />
+        {avatar ? (
+          <Image src={avatar} width={100} height={100} alt="img" />
+        ) : (
+          ""
+        )}
         <button type="submit">отправить</button>
       </form>
 
