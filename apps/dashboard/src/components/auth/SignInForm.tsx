@@ -11,7 +11,7 @@ import {
 import { useForm } from "@mantine/form";
 import { validateEmail, validatePassword } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { API_PATHS } from "@/const";
+import { API_PATHS } from "@/constants/routes";
 import axios from "axios";
 import { publicConfig } from "@/config";
 import { authorize } from "@/lib/requests";
@@ -48,36 +48,24 @@ const SignInForm = ({ className }: Props) => {
     },
   });
 
-  const handleSubmit = (values: Inputs) => {
+  const handleSubmit = async (values: Inputs) => {
     setDisabled(true);
-    axios
-      .get(`${publicConfig.apiHost}${API_PATHS.csrf}`)
-      .then(() => {
-        authorize(values)
-          .then(() => {
-            signIn("credentials", {
-              ...values,
-              redirect: false,
-            })
-              .then((response) => {
-                if (response?.status === 200) {
-                  router.push(Route.PROFILE);
-                }
-              })
-              .catch((nextAuthError) => {
-                setDisabled(false);
-                console.error(nextAuthError);
-              });
-          })
-          .catch((authError) => {
-            setDisabled(false);
-            console.error(authError);
-          });
-      })
-      .catch((xsrfError) => {
-        setDisabled(false);
-        console.error(1, xsrfError);
+
+    try {
+      await axios.get(`${publicConfig.apiHost}${API_PATHS.csrf}`);
+      await authorize(values);
+      const response = await signIn("credentials", {
+        ...values,
+        redirect: false,
       });
+      if (response?.status === 200) {
+        router.push(Route.PROFILE);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setDisabled(false);
+    }
   };
 
   return (

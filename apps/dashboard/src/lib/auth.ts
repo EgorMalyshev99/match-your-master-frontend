@@ -1,5 +1,4 @@
 import NextAuth, { CredentialsSignin, User } from "next-auth";
-import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import { config } from "@/config";
 import { Route } from "@/enums/navigation";
@@ -48,7 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       },
     }),
-    GitHub,
   ],
   secret: config.nextAuthSecret,
   pages: {

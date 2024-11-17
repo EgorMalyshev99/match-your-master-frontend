@@ -2,8 +2,7 @@ import React from "react";
 import SignInForm from "@/components/auth/SignInForm";
 import s from "./login.module.scss";
 import Image from "next/image";
-import { Button, Container, Divider } from "@mantine/core";
-import GithubAuthButton from "@/components/auth/GithubAuthButton";
+import { Button, Container } from "@mantine/core";
 import Link from "next/link";
 import { Route } from "@/enums/navigation";
 
@@ -31,8 +30,6 @@ const Login = async () => {
           >
             Регистрация
           </Button>
-          <Divider my="md" label="или" labelPosition="center" />
-          <GithubAuthButton />
         </div>
       </Container>
     </div>
