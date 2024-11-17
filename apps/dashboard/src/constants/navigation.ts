@@ -41,15 +41,3 @@ export const PROFILE_MENU_ITEMS: MenuItem[] = [
     icon: faGear,
   },
 ];
-
-export const API_PATHS = {
-  login: "/auth/signin",
-  signup: "/auth/signup",
-  logout: "/auth/signout",
-  resetPassword: "/auth/reset-password",
-  emailVerify: "/auth/email-verify",
-  csrf: "/auth/csrf-cookie",
-  userProfile: "/user/profile",
-};
-
-export const GENDERS = ["Мужской", "Женский"];

@@ -1,231 +1,136 @@
 "use client";
-import React, { FormEvent, useEffect, useState } from "react";
-import s from "./profile-form.module.scss";
-import {
-  Button,
-  Card,
-  Fieldset,
-  FileInput,
-  Grid,
-  Group,
-  Radio,
-  Text,
-  TextInput,
-  Tooltip,
-} from "@mantine/core";
-import { DateInput, DatesProvider } from "@mantine/dates";
+import React from "react";
 import "dayjs/locale/ru";
-import { EmailContactType } from "@/enums/profile_form";
+import { Button, Fieldset, Grid, Text, TextInput } from "@mantine/core";
+import { DateInput, DatesProvider } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { validateRequired } from "@/lib/validation";
 import { useProfileStore } from "@/store/profile";
-import { getUserProfileData } from "@/lib/requests";
-import { api } from "@/lib/api";
-import Image from "next/image";
+import { dateToString } from "@/lib/hstrings";
+import { Gender } from "@/models/common";
+import { User } from "@/models/user";
+import s from "./profile-form.module.scss";
 
-interface Inputs {}
+interface Inputs {
+  first_name: string;
+  last_name: string;
+  gender: Gender;
+  date_of_birth: Date;
+  city: string;
+}
 
-const ProfileForm = () => {
-  const [isWordEmailUsed, setIsWordEmailUsed] = useState<boolean>(false);
-  const { first_name, last_name, birth_date, city, setData } =
-    useProfileStore();
-
+interface Props {
+  user: User;
+}
+const ProfileForm = ({ user }: Props) => {
+  const { updateProfile, isUpdateLoading } = useProfileStore();
+  const { avatar, first_name, last_name, gender, date_of_birth, city } = user;
   const form = useForm<Inputs>({
     mode: "uncontrolled",
     initialValues: {
       first_name: first_name,
       last_name: last_name,
-      birth_date: birth_date,
+      gender: gender,
+      date_of_birth: new Date(date_of_birth),
       city: city,
     },
     validateInputOnChange: true,
     validate: {
       first_name: validateRequired,
       last_name: validateRequired,
-      birth_date: validateRequired,
+      gender: validateRequired,
+      date_of_birth: validateRequired,
       city: validateRequired,
     },
   });
 
-  const submitHandler = (values: Inputs) => {
-    console.log(values);
-  };
+  const submitHandler = async (values: Inputs) => {
+    const data = {
+      ...values,
+      avatar: avatar,
+      date_of_birth: dateToString(values.date_of_birth),
+    };
 
-  useEffect(() => {
-    getUserProfileData().then((data) => {
-      setData(data);
-    });
-  }, [setData]);
-
-  const [avatar, setAvatar] = useState<string | null>(null);
-  const onSubmit = async (evt: FormEvent) => {
-    evt.preventDefault();
-
-    const formData = new FormData(evt.target as HTMLFormElement);
-    const response = await api.post(
-      "http://api.match-your-master.local/user/image/avatar/upload",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    );
-
-    console.log(response.data.avatar);
-    setAvatar(response.data.avatar);
+    await updateProfile(data);
   };
 
   return (
     <>
-      <form action="" onSubmit={onSubmit}>
-        <FileInput
-          name="image"
-          label="Input label"
-          description="Input description"
-          placeholder="Input placeholder"
-        />
-        {avatar ? (
-          <Image src={avatar} width={100} height={100} alt="img" />
-        ) : (
-          ""
-        )}
-        <button type="submit">отправить</button>
-      </form>
-
       <form className={s.userInfo} onSubmit={form.onSubmit(submitHandler)}>
-        <Card shadow="md" padding="lg" radius="md">
-          <Fieldset
-            legend={
-              <Text px="xs" size="md" fw={500}>
-                Основная информация
-              </Text>
-            }
-            mb="lg"
-          >
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
+        <Fieldset
+          legend={
+            <Text px="xs" size="md" fw={500}>
+              Основная информация
+            </Text>
+          }
+          mb="lg"
+        >
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={
+                  <Text fw={600} size="xs" className="mb-4">
+                    Имя
+                  </Text>
+                }
+                disabled={isUpdateLoading}
+                placeholder="Введите имя"
+                {...form.getInputProps("first_name")}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={
+                  <Text fw={600} size="xs" className="mb-4">
+                    Фамилия
+                  </Text>
+                }
+                disabled={isUpdateLoading}
+                placeholder="Введите фамилию"
+                {...form.getInputProps("last_name")}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <DatesProvider
+                settings={{
+                  locale: "ru",
+                  firstDayOfWeek: 0,
+                  weekendDays: [5, 6],
+                  timezone: "UTC",
+                }}
+              >
+                <DateInput
+                  valueFormat="YYYY-MM-DD"
+                  defaultLevel="year"
                   label={
                     <Text fw={600} size="xs" className="mb-4">
-                      Имя
+                      Дата рождения
                     </Text>
                   }
-                  placeholder="Введите имя"
-                  {...form.getInputProps("first_name")}
+                  placeholder="Выберите дату"
+                  disabled={isUpdateLoading}
+                  {...form.getInputProps("date_of_birth")}
                 />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={
-                    <Text fw={600} size="xs" className="mb-4">
-                      Фамилия
-                    </Text>
-                  }
-                  placeholder="Введите фамилию"
-                  {...form.getInputProps("last_name")}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <DatesProvider
-                  settings={{
-                    locale: "ru",
-                    firstDayOfWeek: 0,
-                    weekendDays: [0],
-                    timezone: "UTC",
-                  }}
-                >
-                  <DateInput
-                    valueFormat="YYYY-MM-DD"
-                    defaultLevel="year"
-                    label={
-                      <Text fw={600} size="xs" className="mb-4">
-                        Дата рождения
-                      </Text>
-                    }
-                    placeholder="Выберите дату"
-                    {...form.getInputProps("birth_date")}
-                  />
-                </DatesProvider>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={
-                    <Text fw={600} size="xs" className="mb-4">
-                      Город
-                    </Text>
-                  }
-                  {...form.getInputProps("city")}
-                />
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Button type="submit" size="sm">
-                  Сохранить
-                </Button>
-              </Grid.Col>
-            </Grid>
-          </Fieldset>
-
-          <Fieldset
-            legend={
-              <Text px="xs" size="md" fw={500}>
-                Контакты
-              </Text>
-            }
-          >
-            <Grid>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <TextInput
-                  label={
-                    <Text fw={600} size="xs" className="mb-4">
-                      Социальные сети
-                    </Text>
-                  }
-                  placeholder="vk.com"
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
-                <Text fw={600} size="xs" className="mb-8">
-                  Email для связи
-                </Text>
-                <Radio.Group name="email_contact_type" mb="sm">
-                  <Group>
-                    <Tooltip label="Почта, которую вы указали при регистрации">
-                      <Radio
-                        checked={true}
-                        onChange={() => {
-                          setIsWordEmailUsed(false);
-                        }}
-                        label="Почта аккаунта"
-                        value={EmailContactType.self}
-                      />
-                    </Tooltip>
-                    <Tooltip label="Укажите рабочую почту">
-                      <Radio
-                        checked={false}
-                        onChange={() => {
-                          setIsWordEmailUsed(true);
-                        }}
-                        label="Рабочая почта"
-                        value={EmailContactType.work}
-                      />
-                    </Tooltip>
-                  </Group>
-                </Radio.Group>
-                {isWordEmailUsed ? (
-                  <TextInput type="email" placeholder="Рабочая почта" />
-                ) : (
-                  ""
-                )}
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Button type="submit" size="sm">
-                  Сохранить
-                </Button>
-              </Grid.Col>
-            </Grid>
-          </Fieldset>
-        </Card>
+              </DatesProvider>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <TextInput
+                label={
+                  <Text fw={600} size="xs" className="mb-4">
+                    Город
+                  </Text>
+                }
+                disabled={isUpdateLoading}
+                {...form.getInputProps("city")}
+              />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <Button type="submit" size="sm" disabled={isUpdateLoading}>
+                Сохранить
+              </Button>
+            </Grid.Col>
+          </Grid>
+        </Fieldset>
       </form>
     </>
   );

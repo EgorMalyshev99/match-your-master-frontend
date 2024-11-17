@@ -14,13 +14,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
-        pathname: "/u/**",
-      },
-      {
         protocol: process.env.NODE_ENV === "development" ? "http" : "https",
-        hostname: process.env.NEXT_PUBLIC_API_HOST,
+        hostname: "api.match-your-master.local",
+        pathname: "/storage/**",
       },
     ],
   },

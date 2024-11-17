@@ -5,7 +5,7 @@ import { Button, PasswordInput, Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { validateEmail, validatePassword } from "@/lib/validation";
 import { DateInput, DatesProvider } from "@mantine/dates";
-import { GENDERS } from "@/const";
+import { GENDERS } from "@/constants/common";
 
 interface Props {
   className?: string;
@@ -14,7 +14,7 @@ interface Props {
 interface Inputs {
   first_name: string;
   last_name: string;
-  birth_date: string;
+  date_of_birth: string;
   gender: string;
   city: string;
   email: string;
@@ -28,7 +28,7 @@ const SignUpForm = ({ className }: Props) => {
     initialValues: {
       first_name: "",
       last_name: "",
-      birth_date: "",
+      date_of_birth: "",
       gender: "",
       city: "",
       email: "",
@@ -102,7 +102,7 @@ const SignUpForm = ({ className }: Props) => {
               </Text>
             }
             placeholder="Выберите дату"
-            {...form.getInputProps("birth_date")}
+            {...form.getInputProps("date_of_birth")}
             mb="xs"
           />
         </DatesProvider>

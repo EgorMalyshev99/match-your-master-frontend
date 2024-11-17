@@ -1,8 +1,7 @@
-import { UserProfile } from "@/models/user";
-import { API_PATHS } from "@/const";
 import { publicConfig } from "@/config";
 import { AuthResponse, Credentials } from "@/types/auth";
-import { api } from "@/lib/api";
+import { api } from "@/lib/axiosInstance";
+import { API_PATHS } from "@/constants/routes";
 
 export const authorize = async (
   credentials: Credentials,
@@ -16,8 +15,4 @@ export const authorize = async (
       },
     },
   );
-};
-
-export const getUserProfileData = async (): Promise<UserProfile> => {
-  return await api.get(`${publicConfig.apiHost}${API_PATHS.userProfile}`);
 };

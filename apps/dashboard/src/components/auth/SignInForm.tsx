@@ -11,7 +11,7 @@ import {
 import { useForm } from "@mantine/form";
 import { validateEmail, validatePassword } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { API_PATHS } from "@/const";
+import { API_PATHS } from "@/constants/routes";
 import axios from "axios";
 import { publicConfig } from "@/config";
 import { authorize } from "@/lib/requests";

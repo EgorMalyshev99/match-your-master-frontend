@@ -1,11 +1,20 @@
 import { z } from "zod";
+import { genderEnum } from "@/models/common";
 
-const userProfileSchema = z.object({
+export const userSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
-  // avatar: z.string(),
-  birth_date: z.string(),
+  avatar: z.string(),
+  gender: genderEnum,
+  date_of_birth: z.string(),
   city: z.string(),
 });
 
-export type UserProfile = z.infer<typeof userProfileSchema>;
+export const userResponseSchema = z.object({
+  success: z.boolean(),
+  data: userSchema,
+  error: z.string().optional(),
+});
+
+export type UserResponse = z.infer<typeof userResponseSchema>;
+export type User = z.infer<typeof userSchema>;

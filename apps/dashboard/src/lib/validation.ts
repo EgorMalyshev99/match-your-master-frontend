@@ -1,4 +1,4 @@
-export const validateRequired = (value: string | undefined | null) => {
+export const validateRequired = (value: string | Date | undefined | null) => {
   if (!value) {
     return "Это поле необходимо заполнить";
   }

@@ -4,7 +4,7 @@ const userProfileSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   avatar: z.string(),
-  birth_date: z.string(),
+  date_of_birth: z.string(),
   city: z.string(),
 });
 
