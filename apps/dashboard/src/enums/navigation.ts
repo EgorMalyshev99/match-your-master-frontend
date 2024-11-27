@@ -1,10 +1,10 @@
 export enum Route {
-  HOME = "/",
+  HOME = "/my",
   LOGIN = "/auth/login",
   SIGNUP = "/auth/signup",
-  PROFILE = "/profile",
-  OFFERS = "/offers",
-  SUBSCRIPTION = "/subscription",
-  STAT = "/stat",
-  SETTINGS = "/settings",
+  PROFILE = "/my/profile",
+  OFFERS = "/my/offers",
+  SUBSCRIPTION = "/my/subscription",
+  STAT = "/my/stat",
+  SETTINGS = "/my/settings",
 }

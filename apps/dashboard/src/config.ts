@@ -1,5 +1,6 @@
 export const publicConfig = {
-  hostname: process.env.NEXT_PUBLIC_HOSTNAME,
+  host: process.env.NEXT_PUBLIC_HOST,
+  hostName: process.env.NEXT_PUBLIC_HOSTNAME,
   apiHost: process.env.NEXT_PUBLIC_API_HOST,
   port: process.env.NEXT_PUBLIC_PORT ?? "3000",
   isDev: process.env.NODE_ENV === "development",

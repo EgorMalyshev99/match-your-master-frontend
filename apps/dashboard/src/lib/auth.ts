@@ -1,32 +1,45 @@
-import NextAuth, { CredentialsSignin, User } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { config } from "@/config";
 import { Route } from "@/enums/navigation";
+import { config } from "@/config";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { signInSchema } from "@/models/auth";
-import { ZodError } from "zod";
+import { authApi } from "@/lib/axiosInstance";
+import { API_PATHS } from "@/constants/routes";
+import {
+  getCookiesFromResponse,
+  getCSRFToken,
+  getSessionToken,
+} from "@/lib/cookie";
+import { AuthResponse } from "@/types/auth";
+import { parseImageUrl } from "@/lib/image";
+import { NextAuthOptions, User } from "next-auth";
 
-class InvalidDataTypeError extends CredentialsSignin {
-  code = "Invalid data type";
-}
+export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: Route.LOGIN,
+  },
+  secret: config.nextAuthSecret,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          user: user,
+        };
+      }
 
-class InvalidLoginError extends CredentialsSignin {
-  code = "Invalid email or password";
-}
-
-const mockAuthorize = async (email: string): Promise<User | null> => {
-  return {
-    id: "1",
-    email: email,
-    name: "Test User",
-    image: "",
-  };
-};
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
+      return token;
+    },
+    async session({ session, token }) {
+      if (token.user) {
+        session.user = token.user as User;
+      }
+      return session;
+    },
+  },
   providers: [
-    Credentials({
+    CredentialsProvider({
       credentials: { email: {}, password: {} },
-      authorize: async (credentials) => {
+      async authorize(credentials) {
         try {
           const { email, password } =
             await signInSchema.parseAsync(credentials);
@@ -35,22 +48,53 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("Empty data.");
           }
 
-          return mockAuthorize(email);
+          const csrfResponse = await authApi.get(API_PATHS.csrf);
+          let cookies = getCookiesFromResponse(csrfResponse);
+          const xsrfToken = getCSRFToken(cookies);
+          let sessionToken = getSessionToken(cookies);
+
+          const authResponse = await authApi.post<AuthResponse>(
+            API_PATHS.login,
+            { email, password },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "X-XSRF-TOKEN": xsrfToken ?? "",
+                Cookie: `match_your_master_session=${sessionToken ?? ""}`,
+              },
+            },
+          );
+          cookies = getCookiesFromResponse(authResponse);
+          sessionToken = getSessionToken(cookies);
+
+          if (authResponse.data.success) {
+            const userResponse = await authApi.get<User>(
+              API_PATHS.userProfile,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-XSRF-TOKEN": xsrfToken,
+                  Cookie: `match_your_master_session=${sessionToken ?? ""}`,
+                },
+              },
+            );
+
+            const user = userResponse.data;
+            return {
+              ...user,
+              name: user.first_name + " " + user.last_name,
+              avatar: parseImageUrl(user.avatar),
+              xsrf: xsrfToken,
+              cookies: cookies,
+            };
+          } else {
+            return null;
+          }
         } catch (error) {
           console.error(error);
-
-          if (error instanceof ZodError) {
-            throw new InvalidDataTypeError();
-          }
-
-          throw new InvalidLoginError();
+          return null;
         }
       },
     }),
   ],
-  secret: config.nextAuthSecret,
-  pages: {
-    signIn: Route.LOGIN,
-  },
-  trustHost: true,
-});
+};

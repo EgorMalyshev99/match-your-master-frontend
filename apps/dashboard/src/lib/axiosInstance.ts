@@ -1,34 +1,36 @@
 import axios from "axios";
 import { publicConfig } from "@/config";
-import { NextRequest } from "next/server";
-import { getCookie } from "@/lib/cookie";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
 export const api = axios.create({
   baseURL: "/api",
-  headers: {
-    "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
-  },
 });
 
-interface ServerApiConfig {
-  req: NextRequest;
-}
-export const useServerApi = ({ req }: ServerApiConfig) => {
-  const serverApi = axios.create({
+export const authApi = axios.create({
+  baseURL: publicConfig.apiHost,
+  headers: {
+    Referer: publicConfig.host,
+    Origin: publicConfig.host + "/",
+  },
+  withCredentials: true,
+});
+
+export const useServerApi = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return null;
+  }
+
+  return axios.create({
     baseURL: publicConfig.apiHost,
     headers: {
-      Cookie: req.headers.get("cookie"),
-      Referer: req.headers.get("referer"),
-      Origin: req.headers.get("origin"),
+      Cookie: session.user.cookies,
+      Referer: publicConfig.host,
+      Origin: publicConfig.host + "/",
+      "X-XSRF-TOKEN": session.user.xsrf ?? "",
     },
+    withCredentials: true,
+    withXSRFToken: true,
   });
-
-  serverApi.interceptors.request.use((config) => {
-    config.headers["X-XSRF-TOKEN"] = req.cookies.get("XSRF-TOKEN")?.value ?? "";
-    return config;
-  });
-
-  return serverApi;
 };

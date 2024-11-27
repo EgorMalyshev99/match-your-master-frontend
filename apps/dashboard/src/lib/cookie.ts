@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+
 export const getCookie = (name: string): string | null => {
   try {
     const cookies = document.cookie.split(";");
@@ -9,21 +11,45 @@ export const getCookie = (name: string): string | null => {
     }
     return null;
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     return null;
   }
 };
 
-export const getCookieFromRequest = (name: string, request: Request) => {
-  const cookieHeader = request.headers.get("Cookie");
-  if (cookieHeader) {
-    const cookies = cookieHeader.split(";");
-    for (const cookie of cookies) {
-      const [key, value] = cookie.trim().split("=");
-      if (key === name) {
-        return value;
-      }
+export const getCookiesFromResponse = (response: AxiosResponse) => {
+  try {
+    return response.headers["set-cookie"];
+  } catch (e) {
+    return [];
+  }
+};
+
+export const getCSRFToken = (cookies: string[] | undefined) => {
+  if (!cookies) {
+    return null;
+  }
+
+  let xsrf = null;
+  for (const cookie of cookies) {
+    if (cookie.startsWith("XSRF-TOKEN=")) {
+      xsrf = cookie.split("=")[1];
     }
   }
-  return null;
+
+  return xsrf;
+};
+
+export const getSessionToken = (cookies: string[] | undefined) => {
+  if (!cookies) {
+    return null;
+  }
+
+  let token = null;
+  for (const cookie of cookies) {
+    if (cookie.startsWith("match_your_master_session=")) {
+      token = cookie.split("=")[1];
+    }
+  }
+
+  return token;
 };

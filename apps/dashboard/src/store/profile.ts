@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { api } from "@/lib/axiosInstance";
 import { NEXT_API_PATHS } from "@/constants/routes";
-import { User, UserResponse } from "@/models/user";
+import { ProfileUpdateData, User, UserResponse } from "@/models/user";
 import { PostResponse } from "@/models/common";
 
 type State = {
@@ -13,7 +13,7 @@ type State = {
 
 type Actions = {
   fetchProfile: () => Promise<void>;
-  updateProfile: (data: User) => Promise<void>;
+  updateProfile: (data: ProfileUpdateData) => Promise<void>;
 };
 
 const defaultState = {
@@ -23,7 +23,7 @@ const defaultState = {
   error: null,
 };
 
-export const useProfileStore = create<State & Actions>((set) => ({
+export const useProfileStore = create<State & Actions>((set, getState) => ({
   ...defaultState,
   fetchProfile: async () => {
     set({ isLoading: true });
@@ -40,7 +40,7 @@ export const useProfileStore = create<State & Actions>((set) => ({
       set({ isLoading: false });
     }
   },
-  updateProfile: async (data: User) => {
+  updateProfile: async (data: ProfileUpdateData) => {
     set({ isUpdateLoading: true });
     try {
       const response = await api.put<PostResponse>(
@@ -48,7 +48,17 @@ export const useProfileStore = create<State & Actions>((set) => ({
         data,
       );
       if (response.data.success) {
-        set({ user: data });
+        const currentUser = getState().user;
+        if (!currentUser) {
+          return;
+        }
+
+        set({
+          user: {
+            ...currentUser,
+            ...data,
+          },
+        });
       } else {
         set({ error: response.data.error });
       }

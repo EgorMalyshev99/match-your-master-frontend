@@ -9,12 +9,8 @@ import {
   Checkbox,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { validateEmail, validatePassword } from "@/lib/validation";
+import { validateEmail, validateRequired } from "@/lib/validation";
 import { useRouter } from "next/navigation";
-import { API_PATHS } from "@/constants/routes";
-import axios from "axios";
-import { publicConfig } from "@/config";
-import { authorize } from "@/lib/requests";
 import { Route } from "@/enums/navigation";
 import { signIn } from "next-auth/react";
 
@@ -27,9 +23,6 @@ interface Inputs {
   password: string;
   remember_me: boolean;
 }
-
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
 
 const SignInForm = ({ className }: Props) => {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -44,7 +37,7 @@ const SignInForm = ({ className }: Props) => {
     validateInputOnChange: true,
     validate: {
       email: validateEmail,
-      password: validatePassword,
+      password: validateRequired,
     },
   });
 
@@ -52,13 +45,16 @@ const SignInForm = ({ className }: Props) => {
     setDisabled(true);
 
     try {
-      await axios.get(`${publicConfig.apiHost}${API_PATHS.csrf}`);
-      await authorize(values);
       const response = await signIn("credentials", {
-        ...values,
+        email: values.email,
+        password: values.password,
+        callbackUrl: Route.PROFILE,
         redirect: false,
       });
-      if (response?.status === 200) {
+      if (response?.error) {
+        console.log(response.error);
+      } else {
+        router.refresh();
         router.push(Route.PROFILE);
       }
     } catch (error) {

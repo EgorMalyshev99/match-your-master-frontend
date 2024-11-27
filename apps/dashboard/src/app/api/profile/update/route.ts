@@ -1,20 +1,21 @@
 import { useServerApi } from "@/lib/axiosInstance";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { API_PATHS } from "@/constants/routes";
 import { postResponseSchema } from "@/models/common";
 
 export async function PUT(req: NextRequest) {
-  const requestData = await req.json();
+  const api = await useServerApi();
+  if (!api) {
+    return NextResponse.json({ success: false, error: "Unauthorized" });
+  }
 
   try {
-    const response = await useServerApi({ req }).put(
-      API_PATHS.userProfileUpdate,
-      requestData,
-    );
+    const requestData = await req.json();
+    const response = await api.put(API_PATHS.userProfileUpdate, requestData);
 
     const data = postResponseSchema.parse(response.data);
-    return Response.json(data);
+    return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error(error);
+    return NextResponse.json({ success: false, error: error });
   }
 }
