@@ -3,29 +3,22 @@ import React from "react";
 import "dayjs/locale/ru";
 import { Button, Fieldset, Grid, Text, TextInput } from "@mantine/core";
 import { DateInput, DatesProvider } from "@mantine/dates";
-import { useForm } from "@mantine/form";
-import { validateRequired } from "@/lib/validation";
+import { useForm, zodResolver } from "@mantine/form";
 import { useProfileStore } from "@/store/profile";
-import { dateToString } from "@/lib/hstrings";
-import { Gender } from "@/models/common";
 import { User } from "@/models/user";
 import s from "./profile-form.module.scss";
-
-interface Inputs {
-  first_name: string;
-  last_name: string;
-  gender: Gender;
-  date_of_birth: Date;
-  city: string;
-}
+import {
+  ProfileUpdateInputs,
+  profileUpdateSchema,
+} from "@/models/validation/profile";
 
 interface Props {
   user: User;
 }
 const ProfileForm = ({ user }: Props) => {
   const { updateProfile, isUpdateLoading } = useProfileStore();
-  const { avatar, first_name, last_name, gender, date_of_birth, city } = user;
-  const form = useForm<Inputs>({
+  const { first_name, last_name, gender, date_of_birth, city } = user;
+  const form = useForm<ProfileUpdateInputs>({
     mode: "uncontrolled",
     initialValues: {
       first_name: first_name,
@@ -35,20 +28,13 @@ const ProfileForm = ({ user }: Props) => {
       city: city,
     },
     validateInputOnChange: true,
-    validate: {
-      first_name: validateRequired,
-      last_name: validateRequired,
-      gender: validateRequired,
-      date_of_birth: validateRequired,
-      city: validateRequired,
-    },
+    validate: zodResolver(profileUpdateSchema),
   });
 
-  const submitHandler = async (values: Inputs) => {
+  const submitHandler = async (values: ProfileUpdateInputs) => {
     const data = {
       ...values,
-      avatar: avatar,
-      date_of_birth: dateToString(values.date_of_birth),
+      date_of_birth: new Date(values.date_of_birth).toISOString().split("T")[0],
     };
 
     await updateProfile(data);

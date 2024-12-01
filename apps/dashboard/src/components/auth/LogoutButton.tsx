@@ -1,10 +1,10 @@
 "use client";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import s from "./logout-button.module.scss";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Route } from "@/enums/navigation";
-import {useProfileStore} from "@/store/profile";
+import { useProfileStore } from "@/store/profile";
 
 function LogoutButton() {
   const router = useRouter();

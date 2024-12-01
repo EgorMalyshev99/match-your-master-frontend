@@ -1,17 +1,19 @@
 import { Route } from "@/enums/navigation";
 import { config } from "@/config";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { signInSchema } from "@/models/auth";
+import { signInSchema } from "@/models/validation/auth";
 import { authApi } from "@/lib/axiosInstance";
 import { API_PATHS } from "@/constants/routes";
 import { getCookiesFromResponse, getCookieValue } from "@/lib/cookie";
 import { AuthResponse } from "@/types/auth";
 import { parseImageUrl } from "@/lib/image";
 import { NextAuthOptions, User } from "next-auth";
+import { redirect } from "next/navigation";
 
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: Route.LOGIN,
+    signOut: Route.LOGOUT,
   },
   secret: config.nextAuthSecret,
   session: {
@@ -40,7 +42,8 @@ export const authOptions: NextAuthOptions = {
       credentials: { email: {}, password: {} },
       async authorize(credentials) {
         try {
-          const { email, password } = await signInSchema.parseAsync(credentials);
+          const { email, password } =
+            await signInSchema.parseAsync(credentials);
 
           const csrfResponse = await authApi.get(API_PATHS.csrf);
           let cookies = getCookiesFromResponse(csrfResponse);

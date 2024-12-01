@@ -1,0 +1,8 @@
+.mantine-input {
+  &--underline {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-right: unset;
+  }
+}

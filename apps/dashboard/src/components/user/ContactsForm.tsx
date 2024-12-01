@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { EmailContactType } from "@/enums/profile_form";
+import MultipleSocialInput from "@/components/ui/inputs/multiple-social-input";
 
 const ContactsForm = () => {
   const [isWordEmailUsed, setIsWordEmailUsed] = useState<boolean>(false);
@@ -30,17 +31,13 @@ const ContactsForm = () => {
           }
         >
           <Grid>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={
-                  <Text fw={600} size="xs" className="mb-4">
-                    Социальные сети
-                  </Text>
-                }
-                placeholder="vk.com"
-              />
+            <Grid.Col span={12}>
+              <Text fw={600} size="xs" className="mb-4">
+                Социальные сети
+              </Text>
+              <MultipleSocialInput data={[]} />
             </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
+            <Grid.Col span={12}>
               <Text fw={600} size="xs" className="mb-8">
                 Email для связи
               </Text>

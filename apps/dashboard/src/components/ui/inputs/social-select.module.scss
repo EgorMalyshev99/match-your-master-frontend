@@ -1,0 +1,11 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  position: absolute;
+  width: 150px;
+  visibility: hidden;
+}

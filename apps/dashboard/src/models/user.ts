@@ -12,14 +12,6 @@ export const userSchema = z.object({
   city: z.string(),
 });
 
-export const profileUpdateSchema = userSchema.pick({
-  first_name: true,
-  last_name: true,
-  gender: true,
-  date_of_birth: true,
-  city: true,
-});
-
 export const userResponseSchema = z.object({
   success: z.boolean(),
   data: userSchema,
@@ -28,4 +20,3 @@ export const userResponseSchema = z.object({
 
 export type UserResponse = z.infer<typeof userResponseSchema>;
 export type User = z.infer<typeof userSchema>;
-export type ProfileUpdateData = z.infer<typeof profileUpdateSchema>;

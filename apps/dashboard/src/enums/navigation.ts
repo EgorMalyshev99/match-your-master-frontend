@@ -1,6 +1,7 @@
 export enum Route {
   HOME = "/my",
   LOGIN = "/auth/login",
+  LOGOUT = "/auth/logout",
   SIGNUP = "/auth/signup",
   PROFILE = "/my/profile",
   OFFERS = "/my/offers",

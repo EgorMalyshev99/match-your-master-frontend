@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { MenuItem, PROFILE_MENU_ITEMS } from "@/constants/navigation";
+import { MenuItem, PROFILE_MENU_ITEMS } from "@/constants/menu";
 import Link from "next/link";
 import s from "./user-sidebar.module.scss";
 import LogoutButton from "@/components/auth/LogoutButton";

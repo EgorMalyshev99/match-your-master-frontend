@@ -2,12 +2,13 @@ import { useLaravelApi } from "@/lib/axiosInstance";
 import { publicConfig } from "@/config";
 import { API_PATHS } from "@/constants/routes";
 import { userSchema } from "@/models/user";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { Route } from "@/enums/navigation";
 
-export async function GET(req: NextRequest) {
+export async function GET(req: Request) {
   const api = await useLaravelApi();
   if (!api) {
-    return NextResponse.json({ success: false, error: "Unauthorized" });
+    return NextResponse.redirect(new URL(Route.LOGOUT, req.url));
   }
 
   try {

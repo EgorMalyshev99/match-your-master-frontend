@@ -14,7 +14,7 @@ import { DateInput, DatesProvider } from "@mantine/dates";
 import { GENDERS } from "@/constants/common";
 import { api } from "@/lib/axiosInstance";
 import { NEXT_API_PATHS } from "@/constants/routes";
-import { SignUpInputs, signUpSchema } from "@/models/auth";
+import { SignUpInputs, signUpSchema } from "@/models/validation/auth";
 import { signIn } from "next-auth/react";
 import { Route } from "@/enums/navigation";
 import { useRouter } from "next/navigation";

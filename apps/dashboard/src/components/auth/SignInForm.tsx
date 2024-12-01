@@ -13,9 +13,9 @@ import { useForm, zodResolver } from "@mantine/form";
 import { useRouter } from "next/navigation";
 import { Route } from "@/enums/navigation";
 import { signIn } from "next-auth/react";
-import { signInSchema } from "@/models/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { signInSchema } from "@/models/validation/auth";
 
 interface Props {
   className?: string;

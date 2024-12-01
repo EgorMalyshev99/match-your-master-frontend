@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { ColorSchemeScript } from "@mantine/core";
 import Provider from "@/components/providers/provider";
-import "@/scss/index.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@/scss/index.scss";
 
 config.autoAddCss = false;
 export const metadata: Metadata = {

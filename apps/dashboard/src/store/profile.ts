@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { api } from "@/lib/axiosInstance";
 import { NEXT_API_PATHS } from "@/constants/routes";
-import { ProfileUpdateData, User, UserResponse } from "@/models/user";
+import { User, UserResponse } from "@/models/user";
 import { PostResponse } from "@/models/common";
+import { ProfileUpdateInputs } from "@/models/validation/profile";
 
 type State = {
   user: User | null;
@@ -13,7 +14,7 @@ type State = {
 
 type Actions = {
   fetchProfile: () => Promise<void>;
-  updateProfile: (data: ProfileUpdateData) => Promise<void>;
+  updateProfile: (data: ProfileUpdateInputs) => Promise<void>;
   reset: () => void;
 };
 
@@ -30,7 +31,6 @@ export const useProfileStore = create<State & Actions>((set, getState) => ({
     set({ isLoading: true });
     try {
       const response = await api.get<UserResponse>(NEXT_API_PATHS.profile);
-      console.log(response.data);
       if (response.data.success) {
         set({ user: response.data.data });
       } else {
@@ -42,7 +42,7 @@ export const useProfileStore = create<State & Actions>((set, getState) => ({
       set({ isLoading: false });
     }
   },
-  updateProfile: async (data: ProfileUpdateData) => {
+  updateProfile: async (data: ProfileUpdateInputs) => {
     set({ isUpdateLoading: true });
     try {
       const response = await api.put<PostResponse>(
@@ -59,6 +59,9 @@ export const useProfileStore = create<State & Actions>((set, getState) => ({
           user: {
             ...currentUser,
             ...data,
+            date_of_birth: new Date(data.date_of_birth)
+              .toISOString()
+              .split("T")[0],
           },
         });
       } else {

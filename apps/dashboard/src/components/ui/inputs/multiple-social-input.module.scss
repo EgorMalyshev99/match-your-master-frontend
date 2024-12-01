@@ -1,0 +1,41 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemsWrapper {
+  margin-bottom: 6px;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  gap: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.linkInput {
+  flex-grow: 1;
+}
+
+.btnAdd {
+  gap: 4px;
+  color: var(--mantine-primary-color-5);
+  align-self: flex-start;
+}
+
+.btnRemove {
+  color: var(--mantine-color-red-7);
+  flex-shrink: 0;
+}
+
+.btnAdd, .btnRemove {
+  padding: 4px;
+  border: none;
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
