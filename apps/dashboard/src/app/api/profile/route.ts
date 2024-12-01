@@ -1,11 +1,11 @@
-import { useServerApi } from "@/lib/axiosInstance";
+import { useLaravelApi } from "@/lib/axiosInstance";
 import { publicConfig } from "@/config";
 import { API_PATHS } from "@/constants/routes";
 import { userSchema } from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const api = await useServerApi();
+  const api = await useLaravelApi();
   if (!api) {
     return NextResponse.json({ success: false, error: "Unauthorized" });
   }

@@ -12,6 +12,7 @@ export const API_PATHS = {
 };
 
 export const NEXT_API_PATHS = {
+  signup: "/auth/signup",
   profile: "/profile",
   updateProfile: "/profile/update",
 };

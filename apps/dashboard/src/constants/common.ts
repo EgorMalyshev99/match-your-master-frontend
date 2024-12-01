@@ -1,1 +1,10 @@
-export const GENDERS = ["Мужской", "Женский"];
+export const GENDERS = [
+  {
+    value: "male",
+    label: "Мужской",
+  },
+  {
+    value: "female",
+    label: "Женский",
+  },
+];

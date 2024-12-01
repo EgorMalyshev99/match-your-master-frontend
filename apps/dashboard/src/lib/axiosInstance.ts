@@ -16,7 +16,7 @@ export const authApi = axios.create({
   withCredentials: true,
 });
 
-export const useServerApi = async () => {
+export const useLaravelApi = async () => {
   const session = await getServerSession(authOptions);
   if (!session) {
     return null;

@@ -14,9 +14,10 @@ type State = {
 type Actions = {
   fetchProfile: () => Promise<void>;
   updateProfile: (data: ProfileUpdateData) => Promise<void>;
+  reset: () => void;
 };
 
-const defaultState = {
+const defaultProfileState = {
   user: null,
   isLoading: false,
   isUpdateLoading: false,
@@ -24,11 +25,12 @@ const defaultState = {
 };
 
 export const useProfileStore = create<State & Actions>((set, getState) => ({
-  ...defaultState,
+  ...defaultProfileState,
   fetchProfile: async () => {
     set({ isLoading: true });
     try {
       const response = await api.get<UserResponse>(NEXT_API_PATHS.profile);
+      console.log(response.data);
       if (response.data.success) {
         set({ user: response.data.data });
       } else {
@@ -68,4 +70,5 @@ export const useProfileStore = create<State & Actions>((set, getState) => ({
       set({ isUpdateLoading: false });
     }
   },
+  reset: () => set({ ...defaultProfileState }),
 }));

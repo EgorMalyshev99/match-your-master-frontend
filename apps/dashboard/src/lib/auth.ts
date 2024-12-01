@@ -4,11 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { signInSchema } from "@/models/auth";
 import { authApi } from "@/lib/axiosInstance";
 import { API_PATHS } from "@/constants/routes";
-import {
-  getCookiesFromResponse,
-  getCSRFToken,
-  getSessionToken,
-} from "@/lib/cookie";
+import { getCookiesFromResponse, getCookieValue } from "@/lib/cookie";
 import { AuthResponse } from "@/types/auth";
 import { parseImageUrl } from "@/lib/image";
 import { NextAuthOptions, User } from "next-auth";
@@ -18,6 +14,9 @@ export const authOptions: NextAuthOptions = {
     signIn: Route.LOGIN,
   },
   secret: config.nextAuthSecret,
+  session: {
+    maxAge: 7200,
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -41,17 +40,15 @@ export const authOptions: NextAuthOptions = {
       credentials: { email: {}, password: {} },
       async authorize(credentials) {
         try {
-          const { email, password } =
-            await signInSchema.parseAsync(credentials);
-
-          if (!email || !password) {
-            throw new Error("Empty data.");
-          }
+          const { email, password } = await signInSchema.parseAsync(credentials);
 
           const csrfResponse = await authApi.get(API_PATHS.csrf);
           let cookies = getCookiesFromResponse(csrfResponse);
-          const xsrfToken = getCSRFToken(cookies);
-          let sessionToken = getSessionToken(cookies);
+          let xsrfTokenCookie = getCookieValue(cookies, "XSRF-TOKEN");
+          let sessionTokenCookie = getCookieValue(
+            cookies,
+            "match_your_master_session",
+          );
 
           const authResponse = await authApi.post<AuthResponse>(
             API_PATHS.login,
@@ -59,13 +56,16 @@ export const authOptions: NextAuthOptions = {
             {
               headers: {
                 "Content-Type": "application/json",
-                "X-XSRF-TOKEN": xsrfToken ?? "",
-                Cookie: `match_your_master_session=${sessionToken ?? ""}`,
+                "X-XSRF-TOKEN": xsrfTokenCookie?.value,
+                Cookie: `match_your_master_session=${sessionTokenCookie?.value}`,
               },
             },
           );
           cookies = getCookiesFromResponse(authResponse);
-          sessionToken = getSessionToken(cookies);
+          sessionTokenCookie = getCookieValue(
+            cookies,
+            "match_your_master_session",
+          );
 
           if (authResponse.data.success) {
             const userResponse = await authApi.get<User>(
@@ -73,8 +73,8 @@ export const authOptions: NextAuthOptions = {
               {
                 headers: {
                   "Content-Type": "application/json",
-                  "X-XSRF-TOKEN": xsrfToken,
-                  Cookie: `match_your_master_session=${sessionToken ?? ""}`,
+                  "X-XSRF-TOKEN": xsrfTokenCookie?.value,
+                  Cookie: `match_your_master_session=${sessionTokenCookie?.value}`,
                 },
               },
             );
@@ -83,8 +83,8 @@ export const authOptions: NextAuthOptions = {
             return {
               ...user,
               name: user.first_name + " " + user.last_name,
-              avatar: parseImageUrl(user.avatar),
-              xsrf: xsrfToken,
+              avatar: user.avatar ? parseImageUrl(user.avatar) : null,
+              xsrf: xsrfTokenCookie?.value ?? "",
               cookies: cookies,
             };
           } else {

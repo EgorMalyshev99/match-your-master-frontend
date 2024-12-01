@@ -15,13 +15,18 @@ const UserCard = ({ user }: Props) => {
 
   return (
     <div className={s.userCard}>
-      <Image
-        src={parseImageUrl(user.avatar)}
-        className={`${s.userAvatar} mb-2`}
-        width={120}
-        height={120}
-        alt={user.first_name + " " + user.last_name}
-      />
+      {user.avatar ? (
+        <Image
+          src={parseImageUrl(user.avatar)}
+          className={`${s.userAvatar} mb-2`}
+          width={120}
+          height={120}
+          alt={user.first_name + " " + user.last_name}
+        />
+      ) : (
+        ""
+      )}
+
       <div className={s.userName}>{`${user.first_name} ${user.last_name}`}</div>
     </div>
   );

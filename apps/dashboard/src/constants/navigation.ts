@@ -6,6 +6,7 @@ import {
   faWallet,
   faChartSimple,
   faGear,
+  faAddressCard,
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface MenuItem {
@@ -21,19 +22,24 @@ export const PROFILE_MENU_ITEMS: MenuItem[] = [
     icon: faUser,
   },
   {
+    label: "Кабинет мастера",
+    path: Route.CABINET,
+    icon: faAddressCard,
+  },
+  {
     label: "Объявления",
     path: Route.OFFERS,
     icon: faEnvelope,
   },
   {
-    label: "Подписка",
-    path: Route.SUBSCRIPTION,
-    icon: faWallet,
-  },
-  {
     label: "Статистика",
     path: Route.STAT,
     icon: faChartSimple,
+  },
+  {
+    label: "Подписка",
+    path: Route.SUBSCRIPTION,
+    icon: faWallet,
   },
   {
     label: "Настройки",

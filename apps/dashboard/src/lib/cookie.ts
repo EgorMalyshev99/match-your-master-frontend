@@ -24,32 +24,32 @@ export const getCookiesFromResponse = (response: AxiosResponse) => {
   }
 };
 
-export const getCSRFToken = (cookies: string[] | undefined) => {
+export const getCookieValue = (
+  cookies: string[] | undefined,
+  cookieName: string,
+) => {
   if (!cookies) {
     return null;
   }
 
-  let xsrf = null;
+  let value = null;
+  let expirationDate = null;
+  let maxAge = null;
+
   for (const cookie of cookies) {
-    if (cookie.startsWith("XSRF-TOKEN=")) {
-      xsrf = cookie.split("=")[1];
+    if (cookie.startsWith(cookieName)) {
+      const [cookieValue, ...rest] = cookie.split(";");
+      const [name, ...restValue] = cookieValue.split("=");
+      value = restValue.join("=");
+      for (const item of rest) {
+        if (item.trim().startsWith("Expires=")) {
+          expirationDate = new Date(item.trim().split("=")[1]);
+        } else if (item.trim().startsWith("Max-Age=")) {
+          maxAge = parseInt(item.trim().split("=")[1]);
+        }
+      }
     }
   }
 
-  return xsrf;
-};
-
-export const getSessionToken = (cookies: string[] | undefined) => {
-  if (!cookies) {
-    return null;
-  }
-
-  let token = null;
-  for (const cookie of cookies) {
-    if (cookie.startsWith("match_your_master_session=")) {
-      token = cookie.split("=")[1];
-    }
-  }
-
-  return token;
+  return { value, expirationDate, maxAge };
 };
