@@ -22,7 +22,7 @@ const Profile = () => {
         <Grid>
           <GridCol span={8}>
             <Flex justify="center" mb="md">
-              <UserCard user={user} />
+              <UserCard />
             </Flex>
             <Card shadow="md" padding="lg" radius="md">
               <ProfileForm user={user} />

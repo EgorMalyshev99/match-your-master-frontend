@@ -3,12 +3,10 @@ import { config } from "@/config";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { signInSchema } from "@/models/validation/auth";
 import { authApi } from "@/lib/axiosInstance";
-import { API_PATHS } from "@/constants/routes";
+import { LARAVEL_API_PATHS } from "@/constants/routes";
 import { getCookiesFromResponse, getCookieValue } from "@/lib/cookie";
 import { AuthResponse } from "@/types/auth";
-import { parseImageUrl } from "@/lib/image";
 import { NextAuthOptions, User } from "next-auth";
-import { redirect } from "next/navigation";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -45,7 +43,7 @@ export const authOptions: NextAuthOptions = {
           const { email, password } =
             await signInSchema.parseAsync(credentials);
 
-          const csrfResponse = await authApi.get(API_PATHS.csrf);
+          const csrfResponse = await authApi.get(LARAVEL_API_PATHS.csrf);
           let cookies = getCookiesFromResponse(csrfResponse);
           let xsrfTokenCookie = getCookieValue(cookies, "XSRF-TOKEN");
           let sessionTokenCookie = getCookieValue(
@@ -54,7 +52,7 @@ export const authOptions: NextAuthOptions = {
           );
 
           const authResponse = await authApi.post<AuthResponse>(
-            API_PATHS.login,
+            LARAVEL_API_PATHS.login,
             { email, password },
             {
               headers: {
@@ -72,7 +70,7 @@ export const authOptions: NextAuthOptions = {
 
           if (authResponse.data.success) {
             const userResponse = await authApi.get<User>(
-              API_PATHS.userProfile,
+              LARAVEL_API_PATHS.userProfile,
               {
                 headers: {
                   "Content-Type": "application/json",
@@ -86,7 +84,7 @@ export const authOptions: NextAuthOptions = {
             return {
               ...user,
               name: user.first_name + " " + user.last_name,
-              avatar: user.avatar ? parseImageUrl(user.avatar) : null,
+              avatar: user.avatar ?? null,
               xsrf: xsrfTokenCookie?.value ?? "",
               cookies: cookies,
             };

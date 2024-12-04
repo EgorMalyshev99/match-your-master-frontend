@@ -10,8 +10,56 @@
   text-align: center;
 }
 
-.userAvatar {
+.avatarWrapper {
+  position: relative;
+}
+
+.avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  display: block;
+}
+
+.uploadAvatarWrapper {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+}
+
+.uploadAvatarBtn {
+  position: relative;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  min-height: auto;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div {
+    display: none;
+  }
+}
+
+.clearAvatarBtn {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+  border-radius: 50%;
+  overflow: hidden;
+
+  svg {
+    font-size: 12px;
+    color: var(--mantine-primary-color-4);
+  }
 }

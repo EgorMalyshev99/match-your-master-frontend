@@ -18,5 +18,17 @@ export const userResponseSchema = z.object({
   error: z.string().optional(),
 });
 
+export const updateUserAvatarResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.object({
+    type: z.string(),
+    url: z.string(),
+  }),
+  error: z.string().optional(),
+});
+
 export type UserResponse = z.infer<typeof userResponseSchema>;
+export type UpdateUserAvatarResponse = z.infer<
+  typeof updateUserAvatarResponseSchema
+>;
 export type User = z.infer<typeof userSchema>;

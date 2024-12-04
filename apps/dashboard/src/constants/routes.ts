@@ -1,4 +1,4 @@
-export const API_PATHS = {
+export const LARAVEL_API_PATHS = {
   login: "/auth/signin",
   signup: "/auth/signup",
   logout: "/auth/signout",
@@ -14,5 +14,6 @@ export const API_PATHS = {
 export const NEXT_API_PATHS = {
   signup: "/auth/signup",
   profile: "/profile",
-  updateProfile: "/profile/update",
+  updateUser: "/profile/update",
+  uploadUserAvatar: "/profile/upload-avatar",
 };

@@ -5,6 +5,7 @@ import { TextInput, Text } from "@mantine/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPlus } from "@fortawesome/free-solid-svg-icons";
 import SocialSelect from "@/components/ui/inputs/social-select";
+import { SOCIALS } from "@/constants/common";
 
 interface DataItem {
   social: Social;
@@ -65,6 +66,7 @@ const MultipleSocialInput = ({ data, onChange }: Props) => {
       <div className={s.itemsWrapper}>
         {state.map((item, index) => {
           const { social, link } = item;
+          const selectedSocial = SOCIALS.find((item) => item.value === social);
 
           return (
             <div className={s.item} key={index}>
@@ -83,7 +85,9 @@ const MultipleSocialInput = ({ data, onChange }: Props) => {
                 classNames={{
                   input: "mantine-input--underline",
                 }}
-                placeholder="Ссылка"
+                placeholder={
+                  selectedSocial ? selectedSocial.linkTemplate : "Ссылка"
+                }
               />
               <button
                 className={s.btnRemove}

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import s from "./social-select.module.scss";
-import { useDisclosure } from "@mantine/hooks";
+import { useClickOutside, useDisclosure } from "@mantine/hooks";
 import { Social } from "@/enums/social";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ComboboxData, Group, Select, SelectProps } from "@mantine/core";
 import { SOCIALS } from "@/constants/common";
 import { faCheck, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const selectData: ComboboxData = SOCIALS.map((social) => {
   return {
@@ -18,11 +19,24 @@ const renderSelectOption: SelectProps["renderOption"] = ({
   option,
   checked,
 }) => {
-  const icon = SOCIALS.find((item) => item.value === option.value)?.icon;
+  const social = SOCIALS.find((item) => item.value === option.value);
 
   return (
     <Group flex="1" gap="xs">
-      {icon ? <FontAwesomeIcon icon={icon} /> : <></>}
+      {social?.icon ? (
+        <FontAwesomeIcon
+          icon={social.icon}
+          size="lg"
+          color={social.color || ""}
+        />
+      ) : (
+        <></>
+      )}
+      {social?.img ? (
+        <Image src={social.img} width={16} height={16} alt={social.name} />
+      ) : (
+        <></>
+      )}
       {option.label}
       {checked && <FontAwesomeIcon icon={faCheck} />}
     </Group>
@@ -38,7 +52,13 @@ const SocialSelect = ({ value, onChange }: Props) => {
   const [selectedSocial, setSelectedSocial] = useState<Social>(
     value ? value : Social.vk,
   );
-  const [dropdownOpened, { toggle }] = useDisclosure();
+  const [dropdownOpened, { toggle, close }] = useDisclosure();
+  const social = SOCIALS.find((item) => item.value === selectedSocial);
+  const dropdownTogglerRef = useClickOutside(() => {
+    if (dropdownOpened) {
+      close();
+    }
+  }, ["mouseup", "touchend"]);
 
   const onSocialChange = (value: string | null) => {
     if (onChange) {
@@ -59,15 +79,18 @@ const SocialSelect = ({ value, onChange }: Props) => {
         onChange={onSocialChange}
         dropdownOpened={dropdownOpened}
       />
-      <button type="button" onClick={toggle}>
-        {
-          <FontAwesomeIcon
-            icon={
-              SOCIALS.find((social) => social.value === selectedSocial)?.icon ??
-              faGlobe
-            }
-          />
-        }
+      <button
+        className={s.toggleBtn}
+        type="button"
+        onClick={toggle}
+        ref={dropdownTogglerRef}
+      >
+        {social?.icon && (
+          <FontAwesomeIcon icon={social?.icon} color={social?.color || ""} />
+        )}
+        {social?.img && (
+          <Image src={social.img} width={16} height={16} alt={social.name} />
+        )}
       </button>
     </div>
   );

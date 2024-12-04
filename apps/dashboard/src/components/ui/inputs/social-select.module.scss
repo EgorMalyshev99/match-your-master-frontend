@@ -8,4 +8,15 @@
   position: absolute;
   width: 150px;
   visibility: hidden;
+  pointer-events: none;
+}
+
+.toggleBtn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

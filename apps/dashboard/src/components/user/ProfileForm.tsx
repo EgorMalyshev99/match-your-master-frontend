@@ -41,84 +41,82 @@ const ProfileForm = ({ user }: Props) => {
   };
 
   return (
-    <>
-      <form className={s.userInfo} onSubmit={form.onSubmit(submitHandler)}>
-        <Fieldset
-          legend={
-            <Text px="xs" size="md" fw={500}>
-              Основная информация
-            </Text>
-          }
-          mb="lg"
-        >
-          <Grid>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
+    <form className={s.userInfo} onSubmit={form.onSubmit(submitHandler)}>
+      <Fieldset
+        legend={
+          <Text px="xs" size="md" fw={500}>
+            Основная информация
+          </Text>
+        }
+        mb="lg"
+      >
+        <Grid>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <TextInput
+              label={
+                <Text fw={600} size="xs" className="mb-4">
+                  Имя
+                </Text>
+              }
+              disabled={isUpdateLoading}
+              placeholder="Введите имя"
+              {...form.getInputProps("first_name")}
+            />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <TextInput
+              label={
+                <Text fw={600} size="xs" className="mb-4">
+                  Фамилия
+                </Text>
+              }
+              disabled={isUpdateLoading}
+              placeholder="Введите фамилию"
+              {...form.getInputProps("last_name")}
+            />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <DatesProvider
+              settings={{
+                locale: "ru",
+                firstDayOfWeek: 0,
+                weekendDays: [5, 6],
+                timezone: "UTC",
+              }}
+            >
+              <DateInput
+                valueFormat="YYYY-MM-DD"
+                defaultLevel="year"
                 label={
                   <Text fw={600} size="xs" className="mb-4">
-                    Имя
+                    Дата рождения
                   </Text>
                 }
+                placeholder="Выберите дату"
                 disabled={isUpdateLoading}
-                placeholder="Введите имя"
-                {...form.getInputProps("first_name")}
+                {...form.getInputProps("date_of_birth")}
               />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={
-                  <Text fw={600} size="xs" className="mb-4">
-                    Фамилия
-                  </Text>
-                }
-                disabled={isUpdateLoading}
-                placeholder="Введите фамилию"
-                {...form.getInputProps("last_name")}
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <DatesProvider
-                settings={{
-                  locale: "ru",
-                  firstDayOfWeek: 0,
-                  weekendDays: [5, 6],
-                  timezone: "UTC",
-                }}
-              >
-                <DateInput
-                  valueFormat="YYYY-MM-DD"
-                  defaultLevel="year"
-                  label={
-                    <Text fw={600} size="xs" className="mb-4">
-                      Дата рождения
-                    </Text>
-                  }
-                  placeholder="Выберите дату"
-                  disabled={isUpdateLoading}
-                  {...form.getInputProps("date_of_birth")}
-                />
-              </DatesProvider>
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <TextInput
-                label={
-                  <Text fw={600} size="xs" className="mb-4">
-                    Город
-                  </Text>
-                }
-                disabled={isUpdateLoading}
-                {...form.getInputProps("city")}
-              />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <Button type="submit" size="sm" disabled={isUpdateLoading}>
-                Сохранить
-              </Button>
-            </Grid.Col>
-          </Grid>
-        </Fieldset>
-      </form>
-    </>
+            </DatesProvider>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <TextInput
+              label={
+                <Text fw={600} size="xs" className="mb-4">
+                  Город
+                </Text>
+              }
+              disabled={isUpdateLoading}
+              {...form.getInputProps("city")}
+            />
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <Button type="submit" size="sm" disabled={isUpdateLoading}>
+              Сохранить
+            </Button>
+          </Grid.Col>
+        </Grid>
+      </Fieldset>
+    </form>
   );
 };
 
